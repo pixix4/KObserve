@@ -1,7 +1,43 @@
 [![Build Status](https://travis-ci.org/pixix4/KObserve.svg?branch=master)](https://travis-ci.org/pixix4/KObserve)
+[![Download](https://api.bintray.com/packages/pixix4/maven/KObserve/images/download.svg) ](https://bintray.com/pixix4/maven/KObserve/_latestVersion)
 
 # KObserve
 An easy to use kotlin library for observable properties.
+
+## Quick start
+To use this library simply add this to your `build.gradle`
+```groovy
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation "de.westermann:KObserve-jvm:0.1.0"
+}
+```
+
+To use it with javascript or common modules replace `KObserve-jvm` with `KObserve-js` or `KObserve-metadata` respectively.
+
+When you use this library in common modules you need to add the platform specific dependency to each depending module.
+
+An easier method is to enable `gradle_metadata` an experimental feature for gradle 5. This will automatically determine the target platform and include the necessary dependency.
+
+Add this to your `settings.gradle`
+```groovy
+enableFeaturePreview('GRADLE_METADATA')
+```
+
+And update your `build.gradle`
+
+```groovy
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation "de.westermann:KObserve:0.1.0"
+}
+```
 
 ## Event handler
 

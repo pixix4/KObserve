@@ -51,6 +51,108 @@ kotlin {
 }
 
 publishing {
+    publications {
+        jvm(MavenPublication) {
+            pom {
+                name = 'KObserve-jvm'
+                description = 'An easy to use kotlin library for observable properties.'
+                url = 'https://github.com/pixix4/KObserve'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/pixix4/KObserve/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'pixix4'
+                        name = 'Lars Westermann'
+                        email = 'lars-westermann@live.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/pixix4/KObserve.git'
+                    developerConnection = 'scm:git:ssh://github.com/pixix4/KObserve.git'
+                    url = 'https://github.com/pixix4/KObserve'
+                }
+            }
+        }
+        js(MavenPublication) {
+            pom {
+                name = 'KObserve-js'
+                description = 'An easy to use kotlin library for observable properties.'
+                url = 'https://github.com/pixix4/KObserve'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/pixix4/KObserve/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'pixix4'
+                        name = 'Lars Westermann'
+                        email = 'lars-westermann@live.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/pixix4/KObserve.git'
+                    developerConnection = 'scm:git:ssh://github.com/pixix4/KObserve.git'
+                    url = 'https://github.com/pixix4/KObserve'
+                }
+            }
+        }
+        metadata(MavenPublication) {
+            pom {
+                name = 'KObserve-metadata'
+                description = 'An easy to use kotlin library for observable properties.'
+                url = 'https://github.com/pixix4/KObserve'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/pixix4/KObserve/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'pixix4'
+                        name = 'Lars Westermann'
+                        email = 'lars-westermann@live.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/pixix4/KObserve.git'
+                    developerConnection = 'scm:git:ssh://github.com/pixix4/KObserve.git'
+                    url = 'https://github.com/pixix4/KObserve'
+                }
+            }
+        }
+        kotlinMultiplatform(MavenPublication) {
+            pom {
+                name = 'KObserve'
+                description = 'An easy to use kotlin library for observable properties.'
+                url = 'https://github.com/pixix4/KObserve'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://github.com/pixix4/KObserve/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'pixix4'
+                        name = 'Lars Westermann'
+                        email = 'lars-westermann@live.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/pixix4/KObserve.git'
+                    developerConnection = 'scm:git:ssh://github.com/pixix4/KObserve.git'
+                    url = 'https://github.com/pixix4/KObserve'
+                }
+            }
+        }
+    }
     repositories {
         maven {
             url = "$buildDir/repos/releases"
