@@ -49,3 +49,11 @@ kotlin {
         }
     }
 }
+
+publishing {
+    repositories {
+        maven {
+            url = "$buildDir/repos/releases"
+        }
+    }
+}

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pixix4/KObserve.svg?branch=master)](https://travis-ci.org/pixix4/KObserve)
+
 # KObserve
 An easy to use kotlin library for observable properties.
 
