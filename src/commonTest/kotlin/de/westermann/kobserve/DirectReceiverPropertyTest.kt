@@ -3,21 +3,20 @@ package de.westermann.kobserve
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ReceiverPropertyTest {
+class DirectReceiverPropertyTest {
 
 
     @Test
-    fun receiverPropertyTest() {
-        val userProperty = property(Person("John", "Doe"))
-        var user by userProperty
+    fun directReceiverPropertyTest() {
+        val user = Person("John", "Doe")
 
-        val firstNameProperty = userProperty.map(Person::firstName)
+        val firstNameProperty = property(user::firstName)
         val firstName by firstNameProperty
 
-        val lastNameProperty = userProperty.map(Person::lastName)
+        val lastNameProperty = user::lastName.observe()
         val lastName by lastNameProperty
 
-        val ageProperty = userProperty.map(Person::age)
+        val ageProperty = property(user::age)
         var age by ageProperty
 
         var firstNameCount = 0
@@ -41,14 +40,6 @@ class ReceiverPropertyTest {
 
         assertEquals(22, age)
         assertEquals(22, user.age)
-
-        user = Person("Jana", "Doe")
-        assertEquals("Jana", user.firstName)
-        assertEquals("Jana", firstName)
-        assertEquals(21, age)
-
-        assertEquals(1, firstNameCount)
-        assertEquals(2, ageCount)
     }
 
 

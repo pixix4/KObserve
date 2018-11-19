@@ -10,5 +10,5 @@ pluginManagement {
 rootProject.name = 'KObserve'
 
 
-//enableFeaturePreview('GRADLE_METADATA')
+enableFeaturePreview('GRADLE_METADATA')
 enableFeaturePreview('STABLE_PUBLISHING')

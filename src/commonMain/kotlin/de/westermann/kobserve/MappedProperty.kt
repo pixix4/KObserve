@@ -1,11 +1,11 @@
 package de.westermann.kobserve
 
 class MappedProperty<T, R>(
-    private val compute: (R) -> T,
+    private val transform: (R) -> T,
     private val dependency: ReadOnlyProperty<R>
 ) : ReadOnlyProperty<T> {
 
-    override fun get(): T = compute(dependency.value)
+    override fun get(): T = transform(dependency.value)
 
     override val onChange = EventHandler<Unit>()
 
@@ -16,5 +16,5 @@ class MappedProperty<T, R>(
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.map(compute: (R) -> T) =
-    MappedProperty(compute, this)
+fun <T, R> ReadOnlyProperty<R>.map(transform: (R) -> T) =
+    MappedProperty(transform, this)
