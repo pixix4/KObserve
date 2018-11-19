@@ -25,5 +25,4 @@ class ObjectPropertyTest {
         assertEquals(2, test)
         assertEquals(2, delayedValue)
     }
-
 }

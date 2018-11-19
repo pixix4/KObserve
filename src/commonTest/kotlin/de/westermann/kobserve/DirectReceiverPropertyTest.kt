@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 
 class DirectReceiverPropertyTest {
 
-
     @Test
     fun directReceiverPropertyTest() {
         val user = Person("John", "Doe")

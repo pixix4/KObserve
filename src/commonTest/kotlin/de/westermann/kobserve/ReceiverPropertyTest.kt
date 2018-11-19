@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 
 class ReceiverPropertyTest {
 
-
     @Test
     fun receiverPropertyTest() {
         val userProperty = property(Person("John", "Doe"))

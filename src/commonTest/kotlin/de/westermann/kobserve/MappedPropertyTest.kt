@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MappedPropertyTest {
+
     @Test
     fun mappedPropertyTest() {
         val numberProperty = property(1)
