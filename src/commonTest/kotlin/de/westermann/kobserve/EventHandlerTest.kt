@@ -24,7 +24,10 @@ class EventHandlerTest {
         assertEquals(0, handler.size, "Handler was not empty!")
 
         val listener = handler.addListener {}
-        handler.addListener(listener)
+        assertNotNull(listener)
+
+        val nullListener = handler.addListener(listener)
+        assertNull(nullListener)
         assertEquals(1, handler.size, "Listener was not added!")
     }
 
@@ -35,6 +38,7 @@ class EventHandlerTest {
         val listener = handler.addListener {
             fail("The listener was not removed!")
         }
+        assertNotNull(listener)
         assertEquals(1, handler.size, "Listener was not added!")
 
         handler.removeListener(listener)
@@ -67,5 +71,13 @@ class EventHandlerTest {
 
         handler.clearListeners()
         assertEquals(0, handler.size, "Handler was not cleared!")
+    }
+
+    @Test
+    fun referenceTest() {
+        val reference = handler.reference { }
+
+        assertNotNull(reference)
+        assertTrue(reference.isAdded)
     }
 }

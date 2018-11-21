@@ -1,9 +1,10 @@
 package de.westermann.kobserve
 
 /**
- * Represents a simple event handler who manages listeners for an event of type 'T'.
+ * This class represents a simple event handler who manages listeners for an event of type 'T'.
  */
 class EventHandler<T> : Collection<(T) -> Unit> {
+
     private var listeners: Set<(T) -> Unit> = emptySet()
 
     /**
@@ -11,9 +12,13 @@ class EventHandler<T> : Collection<(T) -> Unit> {
      *
      * @param listener The event listener to add.
      *
-     * @return The event listener that was added.
+     * @return The event listener that was added or null if it was already present.
      */
-    fun addListener(listener: (T) -> Unit): (T) -> Unit {
+    fun addListener(listener: (T) -> Unit): ((T) -> Unit)? {
+        if (listener in listeners) {
+            return null
+        }
+
         listeners += listener
         return listener
     }
@@ -37,7 +42,7 @@ class EventHandler<T> : Collection<(T) -> Unit> {
     /**
      * Emit an event to all assigned event listeners.
      *
-     * @param The event to emit.
+     * @param event The event to emit.
      */
     fun emit(event: T) {
         listeners.forEach {
@@ -48,7 +53,9 @@ class EventHandler<T> : Collection<(T) -> Unit> {
     /**
      * @see addListener
      */
-    operator fun invoke(listener: (T) -> Unit) = addListener(listener)
+    operator fun invoke(listener: (T) -> Unit) {
+        addListener(listener)
+    }
 
     /**
      * @see addListener
@@ -62,6 +69,17 @@ class EventHandler<T> : Collection<(T) -> Unit> {
      */
     operator fun minusAssign(listener: (T) -> Unit) {
         removeListener(listener)
+    }
+
+    /**
+     * Add an event listener to this handler if it is not already present.
+     *
+     * @param listener The event listener to add.
+     *
+     * @return A reference object to the added listener or null if it was already present.
+     */
+    fun reference(listener: (T) -> Unit): ListenerReference<T>? {
+        return addListener(listener)?.let { ListenerReference(this, it) }
     }
 
     override val size: Int

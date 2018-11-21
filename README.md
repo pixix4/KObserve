@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.westermann:KObserve-jvm:0.1.0"
+    implementation "de.westermann:KObserve-jvm:$version"
 }
 ```
 
@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.westermann:KObserve:0.1.0"
+    implementation "de.westermann:KObserve:$version"
 }
 ```
 
@@ -49,6 +49,19 @@ onRandomNumber {
 }
 
 onRandomNumber.emit(5)
+```
+
+For advanced usage you can obtain a event listener referencing object.
+
+```kotlin
+val addedReference = onRandomNumber.reference {
+    println("This listener can be removed easily.")
+}
+addedReference.remove()
+
+val lazyReference = ListenerReference(onRandomNumber) {
+    println("This listener has to be added manually.")
+}
 ```
 
 ## Properties

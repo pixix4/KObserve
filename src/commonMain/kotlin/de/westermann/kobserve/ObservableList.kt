@@ -221,4 +221,5 @@ class ObservableList<T>(
     }
 }
 
+fun <T> property(list: MutableList<T>) = ObservableList(list)
 fun <T> MutableList<T>.observe() = ObservableList(this)
