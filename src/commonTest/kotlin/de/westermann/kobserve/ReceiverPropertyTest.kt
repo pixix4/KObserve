@@ -10,13 +10,13 @@ class ReceiverPropertyTest {
         val userProperty = property(Person("John", "Doe"))
         var user by userProperty
 
-        val firstNameProperty = userProperty.map(Person::firstName)
+        val firstNameProperty = userProperty.mapBinding(Person::firstName)
         val firstName by firstNameProperty
 
-        val lastNameProperty = userProperty.map(Person::lastName)
+        val lastNameProperty = userProperty.mapBinding(Person::lastName)
         val lastName by lastNameProperty
 
-        val ageProperty = userProperty.map(Person::age)
+        val ageProperty = userProperty.mapBinding(Person::age)
         var age by ageProperty
 
         var firstNameCount = 0

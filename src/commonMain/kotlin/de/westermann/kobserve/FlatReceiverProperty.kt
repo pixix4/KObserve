@@ -42,5 +42,5 @@ class FlatReceiverProperty<T, R>(
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.flatMap(attribute: KProperty1<R, Property<T>>) =
+fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, Property<T>>) =
     FlatReceiverProperty(attribute, this)

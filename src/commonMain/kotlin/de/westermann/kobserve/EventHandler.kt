@@ -101,3 +101,9 @@ class EventHandler<T> : Collection<(T) -> Unit> {
         return listeners.iterator()
     }
 }
+
+fun EventHandler<Unit>.bind(handler: EventHandler<*>) {
+    handler {
+        emit(Unit)
+    }
+}

@@ -3,7 +3,7 @@ package de.westermann.kobserve
 class ObservableList<T>(
     private val list: MutableList<T>,
     private val parent: Pair<ObservableList<T>, Int>? = null
-) : MutableList<T> {
+) : MutableList<T>, ReadOnlyProperty<ObservableList<T>> {
 
     val onAdd = EventHandler<Int>()
     val onAddRange = EventHandler<IntRange>()
@@ -11,6 +11,17 @@ class ObservableList<T>(
     val onUpdateRange = EventHandler<IntRange>()
     val onRemove = EventHandler<Int>()
     val onRemoveRange = EventHandler<IntRange>()
+
+    override val onChange: EventHandler<Unit> = EventHandler<Unit>().apply {
+        bind(onAdd)
+        bind(onAddRange)
+        bind(onUpdate)
+        bind(onUpdateRange)
+        bind(onRemove)
+        bind(onRemoveRange)
+    }
+
+    override fun get(): ObservableList<T> = this
 
     override val size: Int
         get() = list.size

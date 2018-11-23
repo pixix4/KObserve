@@ -5,16 +5,23 @@ class TransformProperty<T, R>(
     private val dependency: ReadOnlyProperty<R>
 ) : ReadOnlyProperty<T> {
 
-    override fun get(): T = transform(dependency.value)
+    private var internal: T = transform(dependency.value)
+
+    override fun get(): T = internal
 
     override val onChange = EventHandler<Unit>()
 
     init {
         dependency.onChange {
-            onChange.emit(Unit)
+            val newValue = transform(dependency.value)
+
+            if (newValue != internal) {
+                internal = newValue
+                onChange.emit(Unit)
+            }
         }
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.map(transform: (R) -> T) =
+fun <T, R> ReadOnlyProperty<R>.mapBinding(transform: (R) -> T) =
     TransformProperty(transform, this)

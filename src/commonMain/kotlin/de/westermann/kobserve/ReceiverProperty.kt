@@ -25,5 +25,5 @@ class ReceiverProperty<T, R>(
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.map(attribute: KMutableProperty1<R, T>) =
+fun <T, R> ReadOnlyProperty<R>.mapBinding(attribute: KMutableProperty1<R, T>) =
     ReceiverProperty(attribute, this)

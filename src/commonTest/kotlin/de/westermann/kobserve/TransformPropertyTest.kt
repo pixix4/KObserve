@@ -10,7 +10,7 @@ class TransformPropertyTest {
         val numberProperty = property(1)
         var number by numberProperty
 
-        val squareProperty = numberProperty.map { it * it }
+        val squareProperty = numberProperty.mapBinding { it * it }
         val square by squareProperty
 
         var delayedSquare = square
