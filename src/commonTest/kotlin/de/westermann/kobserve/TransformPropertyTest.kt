@@ -3,7 +3,7 @@ package de.westermann.kobserve
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MappedPropertyTest {
+class TransformPropertyTest {
 
     @Test
     fun mappedPropertyTest() {

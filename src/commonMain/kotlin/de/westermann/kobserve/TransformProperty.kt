@@ -1,6 +1,6 @@
 package de.westermann.kobserve
 
-class MappedProperty<T, R>(
+class TransformProperty<T, R>(
     private val transform: (R) -> T,
     private val dependency: ReadOnlyProperty<R>
 ) : ReadOnlyProperty<T> {
@@ -17,4 +17,4 @@ class MappedProperty<T, R>(
 }
 
 fun <T, R> ReadOnlyProperty<R>.map(transform: (R) -> T) =
-    MappedProperty(transform, this)
+    TransformProperty(transform, this)

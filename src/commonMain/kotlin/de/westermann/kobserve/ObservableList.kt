@@ -223,3 +223,4 @@ class ObservableList<T>(
 
 fun <T> property(list: MutableList<T>) = ObservableList(list)
 fun <T> MutableList<T>.observe() = ObservableList(this)
+fun <T> observableListOf(vararg elements: T): ObservableList<T> = ObservableList(mutableListOf(*elements))
