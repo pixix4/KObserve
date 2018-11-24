@@ -55,37 +55,37 @@ class ObservableObjectListTest {
 
     @Test
     fun addAllTest() {
-        var index = -2..-1
-        observableObjectList.onAddRange {
-            index = it
+        var index= emptySet<Int>()
+        observableObjectList.onAdd {
+            index += it
         }
 
         mutableList.addAll(listOf(6, 7))
         observableObjectList.addAll(listOf(6, 7))
 
         assertEquals(mutableList, observableObjectList)
-        assertEquals(mutableList.size - 2 until mutableList.size, index)
+        assertEquals((mutableList.size - 2 until mutableList.size).toSet(), index)
     }
 
     @Test
     fun addAllIndexTest() {
-        var index = -2..-1
-        observableObjectList.onAddRange {
-            index = it
+        var index = emptySet<Int>()
+        observableObjectList.onAdd {
+            index += it
         }
 
         mutableList.addAll(2, listOf(6, 7))
         observableObjectList.addAll(2, listOf(6, 7))
 
         assertEquals(mutableList, observableObjectList)
-        assertEquals(2..3, index)
+        assertEquals((2..3).toSet(), index)
     }
 
     @Test
     fun clearTest() {
-        var index = -2..-1
-        observableObjectList.onRemoveRange {
-            index = it
+        var index = emptySet<Int>()
+        observableObjectList.onRemove {
+            index += it
         }
 
         mutableList.clear()
@@ -93,7 +93,7 @@ class ObservableObjectListTest {
 
         assertEquals(mutableList, observableObjectList)
         assertTrue(observableObjectList.isEmpty())
-        assertEquals(0..4, index)
+        assertEquals((0..4).toSet(), index)
     }
 
     @Test
