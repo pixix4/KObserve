@@ -4,6 +4,11 @@
 # KObserve
 An easy to use kotlin library for observable properties.
 
+1. [Quick start](#quick-start)
+2. [Event handler](#event-handler)
+3. [Properties](#properties)
+4. [Observable lists](#observable-lists)
+
 ## Quick start
 To use this library simply add this to your `build.gradle`
 ```groovy
@@ -97,4 +102,21 @@ var name: String by namePropery
 or a computed value:
 ```kotlin
 val nameLengthProperty = nameProperty.map { it.length }
+```
+
+## Observable lists
+```kotlin
+val personList = observableListOf<Person>()
+
+val mappedList = personList.mapObservable {
+    it.name
+}
+
+val filteredList = personList.filterObservable {
+    it.name.length > 5
+}
+
+val sortedList = personList.sortObservable(Comparator { p1, p2 -> 
+    p1.name.compareTo(p2.name)
+})
 ```

@@ -1,11 +1,9 @@
 package de.westermann.kobserve.list
 
 import de.westermann.kobserve.EventHandler
-import de.westermann.kobserve.bind
 
 class ObservableObjectList<T>(
-    private val list: MutableList<T>,
-    private val parent: Pair<ObservableObjectList<T>, Int>? = null
+    private val list: MutableList<T>
 ) : ObservableList<T> {
 
     override val onAdd = EventHandler<Int>()
@@ -93,20 +91,8 @@ class ObservableObjectList<T>(
         return list.isEmpty()
     }
 
-    override fun iterator(): ObservableListIterator<T> {
-        return ObservableListIterator(this)
-    }
-
     override fun lastIndexOf(element: T): Int {
         return list.lastIndexOf(element)
-    }
-
-    override fun listIterator(): ObservableListIterator<T> {
-        return ObservableListIterator(this)
-    }
-
-    override fun listIterator(index: Int): ObservableListIterator<T> {
-        return ObservableListIterator(this)
     }
 
     override fun remove(element: T): Boolean {
@@ -168,44 +154,12 @@ class ObservableObjectList<T>(
         return s
     }
 
-    override fun subList(fromIndex: Int, toIndex: Int): ObservableObjectList<T> {
-        return ObservableObjectList(list.subList(fromIndex, toIndex), this to fromIndex)
-    }
-
     override fun toString(): String {
         return list.toString()
     }
 
-    private var isNotifyLock = false
-    private fun notifyLock(block: () -> Unit) {
-        if (!isNotifyLock) {
-            isNotifyLock = true
-            block()
-            isNotifyLock = false
-        }
-    }
-
-    override fun notifyItemChanged(index: Int): Unit = notifyLock {
+    override fun notifyItemChanged(index: Int) {
         emitOnUpdate(index)
-        parent?.let { (p, offset) ->
-            p.notifyItemChanged(offset + index)
-        }
-    }
-
-    override fun notifyItemRangeChanged(indices: IntRange): Unit = notifyLock {
-        for (i in indices) {
-            emitOnUpdate(i)
-        }
-        parent?.let { (p, offset) ->
-            p.notifyItemRangeChanged(offset + indices.first..offset + indices.last)
-        }
-    }
-
-    override fun notifyDatasetChanged(): Unit = notifyLock {
-        super.notifyDatasetChanged()
-        parent?.let { (p, offset) ->
-            p.notifyItemRangeChanged(offset until offset + size)
-        }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -221,17 +175,6 @@ class ObservableObjectList<T>(
 
     override fun hashCode(): Int {
         return list.hashCode()
-    }
-
-    init {
-        parent?.let { (p, offset) ->
-            p.onUpdate {
-                val index = it - offset
-                if (index in 0 until size) {
-                    notifyItemChanged(index)
-                }
-            }
-        }
     }
 }
 

@@ -62,12 +62,6 @@ class MappedList<P, T>(
 
     override fun isEmpty(): Boolean = parent.isEmpty()
 
-    private fun fullList() = (0 until size).map(this::get)
-
-    override fun iterator(): Iterator<T> {
-        return fullList().iterator()
-    }
-
     override fun lastIndexOf(element: T): Int {
         for (i in (0 until size).reversed()) {
             if (element == get(i)) {
@@ -77,24 +71,8 @@ class MappedList<P, T>(
         return -1
     }
 
-    override fun listIterator(): ListIterator<T> {
-        return fullList().listIterator()
-    }
-
-    override fun listIterator(index: Int): ListIterator<T> {
-        return fullList().listIterator(index)
-    }
-
-    override fun subList(fromIndex: Int, toIndex: Int): MappedList<P, T> {
-        return MappedList(parent.subList(fromIndex, toIndex), transform)
-    }
-
     override fun notifyItemChanged(index: Int) {
         parent.notifyItemChanged(index)
-    }
-
-    override fun notifyItemRangeChanged(indices: IntRange) {
-        parent.notifyItemRangeChanged(indices)
     }
 
     override fun notifyDatasetChanged() {

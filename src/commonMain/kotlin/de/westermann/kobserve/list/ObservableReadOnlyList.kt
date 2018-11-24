@@ -12,15 +12,27 @@ interface ObservableReadOnlyList<T> : List<T>, ReadOnlyProperty<ObservableReadOn
         onUpdate.emit(index)
     }
 
-    fun notifyItemRangeChanged(indices: IntRange) {
+    fun notifyDatasetChanged() {
         for (i in indices) {
             onUpdate.emit(i)
         }
     }
 
-    fun notifyDatasetChanged() = notifyItemRangeChanged(0 until size)
+    override fun subList(fromIndex: Int, toIndex: Int): ObservableReadOnlySubList<T> {
+        return ObservableReadOnlySubList(this, fromIndex until toIndex)
+    }
 
-    override fun subList(fromIndex: Int, toIndex: Int): ObservableReadOnlyList<T>
+    override fun iterator(): Iterator<T> {
+        return ObservableReadOnlyListIterator(this)
+    }
+
+    override fun listIterator(): ListIterator<T> {
+        return ObservableReadOnlyListIterator(this)
+    }
+
+    override fun listIterator(index: Int): ListIterator<T> {
+        return ObservableReadOnlyListIterator(this, index)
+    }
 
     override fun get(): ObservableReadOnlyList<T> {
         return this
