@@ -1,5 +1,6 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.basic.mapBinding
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -7,7 +8,7 @@ class TransformPropertyTest {
 
     @Test
     fun mappedPropertyTest() {
-        val numberProperty = property(1)
+        val numberProperty = de.westermann.kobserve.basic.property(1)
         var number by numberProperty
 
         val squareProperty = numberProperty.mapBinding { it * it }

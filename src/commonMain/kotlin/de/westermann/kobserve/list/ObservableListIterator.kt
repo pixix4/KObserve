@@ -1,24 +1,24 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.list
 
 class ObservableListIterator<T>(
-    private val list: ObservableList<T>,
+    private val objectList: ObservableObjectList<T>,
     private var index: Int = 0
 ) : MutableListIterator<T> {
 
     private var last = -1
 
-    override fun hasNext(): Boolean = index < list.size
+    override fun hasNext(): Boolean = index < objectList.size
 
     override fun next(): T {
         if (!hasNext()) throw NoSuchElementException()
         last = index++
-        return list[last]
+        return objectList[last]
     }
 
     override fun remove() {
         check(last != -1) { "Call next() or previous() before removing element from the iterator." }
 
-        list.removeAt(last)
+        objectList.removeAt(last)
         index = last
         last = -1
     }
@@ -31,20 +31,20 @@ class ObservableListIterator<T>(
         if (!hasPrevious()) throw NoSuchElementException()
 
         last = --index
-        return list[last]
+        return objectList[last]
     }
 
     override fun previousIndex(): Int = index - 1
 
     override fun add(element: T) {
-        list.add(index, element)
+        objectList.add(index, element)
         index++
         last = -1
     }
 
     override fun set(element: T) {
         check(last != -1) { "Call next() or previous() before updating element value with the iterator." }
-        list[last] = element
+        objectList[last] = element
     }
 
 }

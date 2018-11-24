@@ -1,96 +1,98 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.list.ObservableObjectList
+import de.westermann.kobserve.list.observe
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ObservableListTest {
+class ObservableObjectListTest {
 
     private lateinit var mutableList: MutableList<Int>
-    private lateinit var observableList: ObservableList<Int>
+    private lateinit var observableObjectList: ObservableObjectList<Int>
 
     @BeforeTest
     fun setupTest() {
         val list = listOf(1, 2, 3, 2, 4)
 
         mutableList = list.toMutableList()
-        observableList = list.toMutableList().observe()
+        observableObjectList = list.toMutableList().observe()
     }
 
     @Test
     fun equalsTest() {
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
     }
 
     @Test
     fun addTest() {
         var index = -1
-        observableList.onAdd {
+        observableObjectList.onAdd {
             index = it
         }
 
         mutableList.add(6)
-        observableList.add(6)
+        observableObjectList.add(6)
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(mutableList.size - 1, index)
     }
 
     @Test
     fun addIndexTest() {
         var index = -1
-        observableList.onAdd {
+        observableObjectList.onAdd {
             index = it
         }
 
         mutableList.add(2, 6)
-        observableList.add(2, 6)
+        observableObjectList.add(2, 6)
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(2, index)
     }
 
     @Test
     fun addAllTest() {
         var index = -2..-1
-        observableList.onAddRange {
+        observableObjectList.onAddRange {
             index = it
         }
 
         mutableList.addAll(listOf(6, 7))
-        observableList.addAll(listOf(6, 7))
+        observableObjectList.addAll(listOf(6, 7))
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(mutableList.size - 2 until mutableList.size, index)
     }
 
     @Test
     fun addAllIndexTest() {
         var index = -2..-1
-        observableList.onAddRange {
+        observableObjectList.onAddRange {
             index = it
         }
 
         mutableList.addAll(2, listOf(6, 7))
-        observableList.addAll(2, listOf(6, 7))
+        observableObjectList.addAll(2, listOf(6, 7))
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(2..3, index)
     }
 
     @Test
     fun clearTest() {
         var index = -2..-1
-        observableList.onRemoveRange {
+        observableObjectList.onRemoveRange {
             index = it
         }
 
         mutableList.clear()
-        observableList.clear()
+        observableObjectList.clear()
 
-        assertEquals(mutableList, observableList)
-        assertTrue(observableList.isEmpty())
+        assertEquals(mutableList, observableObjectList)
+        assertTrue(observableObjectList.isEmpty())
         assertEquals(0..4, index)
     }
 
@@ -98,62 +100,62 @@ class ObservableListTest {
     fun removeTest() {
         val targetIndex = mutableList.indexOf(2)
         var index = -1
-        observableList.onRemove {
+        observableObjectList.onRemove {
             index = it
         }
 
         mutableList.remove(2)
-        observableList.remove(2)
+        observableObjectList.remove(2)
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(targetIndex, index)
     }
 
     @Test
     fun removeAllTest() {
         var removed = emptySet<Int>()
-        observableList.onRemove {
+        observableObjectList.onRemove {
             removed += it
         }
 
         mutableList.removeAll(listOf(1, 2))
-        observableList.removeAll(listOf(1, 2))
+        observableObjectList.removeAll(listOf(1, 2))
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(setOf(0, 1), removed)
     }
 
     @Test
     fun removeAtTest() {
         var index = -1
-        observableList.onRemove {
+        observableObjectList.onRemove {
             index = it
         }
 
         mutableList.removeAt(2)
-        observableList.removeAt(2)
+        observableObjectList.removeAt(2)
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(2, index)
     }
 
     @Test
     fun retainAllTest() {
         var removed = emptySet<Int>()
-        observableList.onRemove {
+        observableObjectList.onRemove {
             removed += it
         }
 
         mutableList.retainAll(listOf(1, 2))
-        observableList.retainAll(listOf(1, 2))
+        observableObjectList.retainAll(listOf(1, 2))
 
-        assertEquals(mutableList, observableList)
+        assertEquals(mutableList, observableObjectList)
         assertEquals(setOf(2, 3), removed)
     }
 
     @Test
     fun subListTest1() {
-        val subList = observableList.subList(1, 3)
+        val subList = observableObjectList.subList(1, 3)
 
         var observeCall = 0
         var observeItem = -1
@@ -161,7 +163,7 @@ class ObservableListTest {
         var subCall = 0
         var subItem = -1
 
-        observableList.onUpdate {
+        observableObjectList.onUpdate {
             observeCall += 1
             observeItem = it
         }
@@ -170,9 +172,9 @@ class ObservableListTest {
             subItem = it
         }
 
-        observableList[2] = 5
+        observableObjectList[2] = 5
 
-        assertEquals(observableList.subList(1, 3), subList)
+        assertEquals(observableObjectList.subList(1, 3), subList)
         assertEquals(1, observeCall)
         assertEquals(2, observeItem)
 
@@ -182,7 +184,7 @@ class ObservableListTest {
 
     @Test
     fun subListTest2() {
-        val subList = observableList.subList(1, 3)
+        val subList = observableObjectList.subList(1, 3)
 
         var observeCall = 0
         var observeItem = -1
@@ -190,7 +192,7 @@ class ObservableListTest {
         var subCall = 0
         var subItem = -1
 
-        observableList.onUpdate {
+        observableObjectList.onUpdate {
             observeCall += 1
             observeItem = it
         }
@@ -201,7 +203,7 @@ class ObservableListTest {
 
         subList[1] = 5
 
-        assertEquals(observableList.subList(1, 3), subList)
+        assertEquals(observableObjectList.subList(1, 3), subList)
         assertEquals(1, observeCall)
         assertEquals(2, observeItem)
 

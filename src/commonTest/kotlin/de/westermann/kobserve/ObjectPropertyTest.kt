@@ -1,5 +1,6 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.basic.observe
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

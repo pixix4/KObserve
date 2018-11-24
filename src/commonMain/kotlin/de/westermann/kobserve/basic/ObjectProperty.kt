@@ -1,4 +1,7 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
+
+import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.Property
 
 class ObjectProperty<T>(initValue: T) : Property<T> {
     private var internal: T = initValue

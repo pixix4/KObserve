@@ -1,5 +1,6 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.basic.observe
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -9,13 +10,13 @@ class DirectReceiverPropertyTest {
     fun directReceiverPropertyTest() {
         val user = Person("John", "Doe")
 
-        val firstNameProperty = property(user::firstName)
+        val firstNameProperty = de.westermann.kobserve.basic.property(user::firstName)
         val firstName by firstNameProperty
 
         val lastNameProperty = user::lastName.observe()
         val lastName by lastNameProperty
 
-        val ageProperty = property(user::age)
+        val ageProperty = de.westermann.kobserve.basic.property(user::age)
         var age by ageProperty
 
         var firstNameCount = 0

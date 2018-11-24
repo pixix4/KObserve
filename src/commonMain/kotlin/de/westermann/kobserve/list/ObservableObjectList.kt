@@ -1,27 +1,33 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.list
 
-class ObservableList<T>(
+import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.bind
+
+class ObservableObjectList<T>(
     private val list: MutableList<T>,
-    private val parent: Pair<ObservableList<T>, Int>? = null
-) : MutableList<T>, ReadOnlyProperty<ObservableList<T>> {
+    private val parent: Pair<ObservableObjectList<T>, Int>? = null
+) : ObservableList<T> {
 
-    val onAdd = EventHandler<Int>()
-    val onAddRange = EventHandler<IntRange>()
-    val onUpdate = EventHandler<Int>()
-    val onUpdateRange = EventHandler<IntRange>()
-    val onRemove = EventHandler<Int>()
-    val onRemoveRange = EventHandler<IntRange>()
+    override val onAdd = EventHandler<Int>()
+    override val onUpdate = EventHandler<Int>()
+    override val onRemove = EventHandler<Int>()
 
-    override val onChange: EventHandler<Unit> = EventHandler<Unit>().apply {
-        bind(onAdd)
-        bind(onAddRange)
-        bind(onUpdate)
-        bind(onUpdateRange)
-        bind(onRemove)
-        bind(onRemoveRange)
+    override val onChange = EventHandler<Unit>()
+
+    private fun emitOnAdd(index: Int) {
+        onAdd.emit(index)
+        onChange.emit(Unit)
     }
 
-    override fun get(): ObservableList<T> = this
+    private fun emitOnUpdate(index: Int) {
+        onUpdate.emit(index)
+        onChange.emit(Unit)
+    }
+
+    private fun emitOnRemove(index: Int) {
+        onRemove.emit(index)
+        onChange.emit(Unit)
+    }
 
     override val size: Int
         get() = list.size
@@ -29,20 +35,22 @@ class ObservableList<T>(
     override fun add(element: T): Boolean {
         val isAdded = list.add(element)
         if (isAdded) {
-            onAdd.emit(size - 1)
+            emitOnAdd(size - 1)
         }
         return isAdded
     }
 
     override fun add(index: Int, element: T) {
         list.add(index, element)
-        onAdd.emit(index)
+        emitOnAdd(index)
     }
 
     override fun addAll(index: Int, elements: Collection<T>): Boolean {
         val isAdded = list.addAll(index, elements)
         if (isAdded) {
-            onAddRange.emit(index until index + elements.size)
+            for (i in index until index + elements.size) {
+                emitOnAdd(i)
+            }
         }
         return isAdded
     }
@@ -50,7 +58,9 @@ class ObservableList<T>(
     override fun addAll(elements: Collection<T>): Boolean {
         val isAdded = list.addAll(elements)
         if (isAdded) {
-            onAddRange.emit(size - elements.size until size)
+            for (i in size - elements.size until size) {
+                emitOnAdd(i)
+            }
         }
         return isAdded
     }
@@ -58,7 +68,9 @@ class ObservableList<T>(
     override fun clear() {
         val oldSize = size
         list.clear()
-        onRemoveRange.emit(0 until oldSize)
+        for (i in (0 until oldSize).reversed()) {
+            emitOnRemove(i)
+        }
     }
 
     override fun contains(element: T): Boolean {
@@ -101,7 +113,7 @@ class ObservableList<T>(
         val index = list.indexOf(element)
         val isRemoved = list.remove(element)
         if (isRemoved) {
-            onRemove.emit(index)
+            emitOnRemove(index)
         }
         return isRemoved
     }
@@ -117,7 +129,7 @@ class ObservableList<T>(
             } else {
                 list.removeAt(index)
                 isChanged = true
-                onRemove.emit(index)
+                emitOnRemove(index)
             }
         }
 
@@ -126,7 +138,7 @@ class ObservableList<T>(
 
     override fun removeAt(index: Int): T {
         val element = list.removeAt(index)
-        onRemove.emit(index)
+        emitOnRemove(index)
         return element
     }
 
@@ -141,7 +153,7 @@ class ObservableList<T>(
             } else {
                 list.removeAt(index)
                 isChanged = true
-                onRemove.emit(index)
+                emitOnRemove(index)
             }
         }
 
@@ -156,8 +168,8 @@ class ObservableList<T>(
         return s
     }
 
-    override fun subList(fromIndex: Int, toIndex: Int): ObservableList<T> {
-        return ObservableList(list.subList(fromIndex, toIndex), this to fromIndex)
+    override fun subList(fromIndex: Int, toIndex: Int): ObservableObjectList<T> {
+        return ObservableObjectList(list.subList(fromIndex, toIndex), this to fromIndex)
     }
 
     override fun toString(): String {
@@ -173,22 +185,24 @@ class ObservableList<T>(
         }
     }
 
-    fun notifyItemChanged(index: Int): Unit = notifyLock {
-        onUpdate.emit(index)
+    override fun notifyItemChanged(index: Int): Unit = notifyLock {
+        emitOnUpdate(index)
         parent?.let { (p, offset) ->
             p.notifyItemChanged(offset + index)
         }
     }
 
-    fun notifyItemRangeChanged(indices: IntRange): Unit = notifyLock {
-        onUpdateRange.emit(indices)
+    override fun notifyItemRangeChanged(indices: IntRange): Unit = notifyLock {
+        for (i in indices) {
+            emitOnUpdate(i)
+        }
         parent?.let { (p, offset) ->
             p.notifyItemRangeChanged(offset + indices.first..offset + indices.last)
         }
     }
 
-    fun notfiyDatasetChanged(): Unit = notifyLock {
-        onUpdateRange.emit(0 until size)
+    override fun notifyDatasetChanged(): Unit = notifyLock {
+        super.notifyDatasetChanged()
         parent?.let { (p, offset) ->
             p.notifyItemRangeChanged(offset until offset + size)
         }
@@ -198,7 +212,7 @@ class ObservableList<T>(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as ObservableList<*>
+        other as ObservableObjectList<*>
 
         if (list != other.list) return false
 
@@ -209,29 +223,19 @@ class ObservableList<T>(
         return list.hashCode()
     }
 
-    private val indexRange: IntRange
-        get() = 0 until size
-
     init {
         parent?.let { (p, offset) ->
             p.onUpdate {
                 val index = it - offset
-                if (index in indexRange) {
+                if (index in 0 until size) {
                     notifyItemChanged(index)
-                }
-            }
-
-            p.onUpdateRange {
-                val firstIndex = it.first - offset
-                val lastIndex = it.last - offset
-                if (firstIndex in indexRange && lastIndex in indexRange) {
-                    notifyItemRangeChanged(firstIndex..lastIndex)
                 }
             }
         }
     }
 }
 
-fun <T> property(list: MutableList<T>) = ObservableList(list)
-fun <T> MutableList<T>.observe() = ObservableList(this)
-fun <T> observableListOf(vararg elements: T): ObservableList<T> = ObservableList(mutableListOf(*elements))
+fun <T> property(list: MutableList<T>) = ObservableObjectList(list)
+fun <T> MutableList<T>.observe() = ObservableObjectList(this)
+fun <T> observableListOf(vararg elements: T): ObservableObjectList<T> =
+    ObservableObjectList(mutableListOf(*elements))

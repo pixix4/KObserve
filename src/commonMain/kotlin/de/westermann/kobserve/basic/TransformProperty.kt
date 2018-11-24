@@ -1,4 +1,7 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
+
+import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.ReadOnlyProperty
 
 class TransformProperty<T, R>(
     private val transform: (R) -> T,

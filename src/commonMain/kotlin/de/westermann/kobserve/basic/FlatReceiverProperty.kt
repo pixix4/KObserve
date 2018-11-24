@@ -1,5 +1,9 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
 
+import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.ListenerReference
+import de.westermann.kobserve.Property
+import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty1
 
 

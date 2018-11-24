@@ -1,5 +1,7 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
 
+import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.Property
 import kotlin.reflect.KMutableProperty0
 
 class DirectReceiverProperty<T>(

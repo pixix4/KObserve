@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Flat map for nested properties.
+- Mapped observable list.
 
 ### Changed
 - rename `map` to `mapBinding` to avoid conflicts with `List.map()`

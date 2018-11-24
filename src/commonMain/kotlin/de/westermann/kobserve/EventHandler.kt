@@ -3,7 +3,7 @@ package de.westermann.kobserve
 /**
  * This class represents a simple event handler who manages listeners for an event of type 'T'.
  */
-class EventHandler<T> : Collection<(T) -> Unit> {
+open class EventHandler<T>() : Collection<(T) -> Unit> {
 
     private var listeners: Set<(T) -> Unit> = emptySet()
 
@@ -99,6 +99,12 @@ class EventHandler<T> : Collection<(T) -> Unit> {
 
     override fun iterator(): Iterator<(T) -> Unit> {
         return listeners.iterator()
+    }
+
+    constructor(vararg dependencies: EventHandler<T>) : this() {
+        dependencies.forEach {
+            it.addListener(this::emit)
+        }
     }
 }
 
