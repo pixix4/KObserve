@@ -108,7 +108,7 @@ open class EventHandler<T>() : Collection<(T) -> Unit> {
     }
 }
 
-fun EventHandler<Unit>.bind(handler: EventHandler<*>) {
+fun EventHandler<Unit>.listenTo(handler: EventHandler<*>) {
     handler {
         emit(Unit)
     }
