@@ -129,4 +129,5 @@ class MappedList<P, T>(
     }
 }
 
-fun <P, T> ObservableReadOnlyList<P>.mapObservable(transform: (P) -> T) = MappedList(this, transform)
+fun <P, T> ObservableReadOnlyList<P>.mapObservable(transform: (P) -> T): ObservableReadOnlyList<T> =
+    MappedList(this, transform)

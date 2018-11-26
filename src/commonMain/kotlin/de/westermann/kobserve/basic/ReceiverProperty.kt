@@ -1,32 +1,23 @@
 package de.westermann.kobserve.basic
 
-import de.westermann.kobserve.EventHandler
 import de.westermann.kobserve.Property
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KMutableProperty1
 
-
-class ReceiverProperty<T, R>(
+class ReceiverProperty<R, T>(
     private val attribute: KMutableProperty1<R, T>,
     private val receiver: ReadOnlyProperty<R>
-) : Property<T> {
+) : ReceiverReadOnlyProperty<R, T>(attribute, receiver), Property<T> {
+
+    override var internal: T = attribute.get(receiver.value)
+
     override fun set(value: T) {
-        attribute.set(receiver.value, value)
-        onChange.emit(Unit)
-    }
-
-    override fun get(): T {
-        return attribute.get(receiver.value)
-    }
-
-    override val onChange = EventHandler<Unit>()
-
-    init {
-        receiver.onChange {
-            onChange.emit(Unit)
+        if (internal != value) {
+            attribute.set(receiver.value, value)
+            receiver.onChange.emit(Unit)
         }
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.mapBinding(attribute: KMutableProperty1<R, T>) =
+fun <T, R> ReadOnlyProperty<R>.mapBinding(attribute: KMutableProperty1<R, T>): Property<T> =
     ReceiverProperty(attribute, this)

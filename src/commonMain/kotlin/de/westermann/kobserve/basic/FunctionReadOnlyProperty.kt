@@ -1,7 +1,6 @@
 package de.westermann.kobserve.basic
 
 import de.westermann.kobserve.EventHandler
-import de.westermann.kobserve.Property
 import de.westermann.kobserve.ReadOnlyProperty
 import de.westermann.kobserve.listenTo
 
@@ -29,3 +28,8 @@ open class FunctionReadOnlyProperty<T>(
 interface FunctionReadOnlyAccessor<T> {
     fun get(): T
 }
+
+fun <T> property(
+    functionAccessor: FunctionReadOnlyAccessor<T>,
+    vararg properties: ReadOnlyProperty<*>
+): ReadOnlyProperty<T> = FunctionReadOnlyProperty(functionAccessor, *properties)

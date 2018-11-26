@@ -1,50 +1,22 @@
 package de.westermann.kobserve.basic
 
-import de.westermann.kobserve.EventHandler
-import de.westermann.kobserve.ListenerReference
 import de.westermann.kobserve.Property
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty1
 
 
-class FlatReceiverProperty<T, R>(
-    private val attribute: KProperty1<R, Property<T>>,
-    private val receiver: ReadOnlyProperty<R>
-) : Property<T> {
+class FlatReceiverProperty<R, T>(
+    override val attribute: KProperty1<R, Property<T>>,
+    receiver: ReadOnlyProperty<R>
+) : FlatReceiverReadOnlyProperty<R, T>(attribute, receiver), Property<T> {
 
-    private val property: Property<T>
+    override val property: Property<T>
         get() = attribute.get(receiver.value)
-
-    override fun get(): T {
-        return property.value
-    }
 
     override fun set(value: T) {
         property.value = value
     }
-
-    override val onChange = EventHandler<Unit>()
-
-    private lateinit var reference: ListenerReference<Unit>
-
-    private fun updateReference() {
-        if (this::reference.isInitialized && reference.isAdded) {
-            reference.remove()
-        }
-
-        property.onChange.reference {
-            onChange.emit(Unit)
-        }?.let { reference = it }
-    }
-
-    init {
-        receiver.onChange {
-            updateReference()
-            onChange.emit(Unit)
-        }
-        updateReference()
-    }
 }
 
-fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, Property<T>>) =
+fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, Property<T>>): Property<T> =
     FlatReceiverProperty(attribute, this)

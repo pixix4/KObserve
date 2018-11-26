@@ -81,6 +81,6 @@ class SortedList<T>(
     }
 }
 
-fun <T> ObservableReadOnlyList<T>.sortObservable(comparator: Comparator<T>) = SortedList(this, comparator)
+fun <T> ObservableReadOnlyList<T>.sortObservable(comparator: Comparator<T>): ObservableReadOnlyList<T> = SortedList(this, comparator)
 
 

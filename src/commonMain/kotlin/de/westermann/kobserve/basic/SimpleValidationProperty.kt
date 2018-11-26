@@ -5,7 +5,7 @@ import de.westermann.kobserve.Property
 import de.westermann.kobserve.ValidationProperty
 import de.westermann.kobserve.listenTo
 
-class ValidationMappedProperty<T>(
+class SimpleValidationProperty<T>(
     private val property: Property<T>,
     private val validator: (T) -> Boolean
 ) : ValidationProperty<T> {
@@ -28,4 +28,4 @@ class ValidationMappedProperty<T>(
     }
 }
 
-fun <T> Property<T>.validate(validator: (T) -> Boolean) = ValidationMappedProperty(this, validator)
+fun <T> Property<T>.validate(validator: (T) -> Boolean): ValidationProperty<T> = SimpleValidationProperty(this, validator)

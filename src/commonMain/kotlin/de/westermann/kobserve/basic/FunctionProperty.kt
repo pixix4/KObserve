@@ -1,5 +1,6 @@
 package de.westermann.kobserve.basic
 
+import de.westermann.kobserve.Property
 import de.westermann.kobserve.ReadOnlyProperty
 import de.westermann.kobserve.ValidationProperty
 
@@ -25,3 +26,8 @@ class FunctionProperty<T>(
 interface FunctionAccessor<T> : FunctionReadOnlyAccessor<T> {
     fun set(value: T): Boolean
 }
+
+fun <T> property(
+    functionAccessor: FunctionAccessor<T>,
+    vararg properties: ReadOnlyProperty<*>
+): Property<T> = FunctionProperty(functionAccessor, *properties)

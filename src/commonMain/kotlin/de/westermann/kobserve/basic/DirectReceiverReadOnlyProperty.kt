@@ -4,8 +4,8 @@ import de.westermann.kobserve.EventHandler
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty0
 
-class DirectReceiverReadOnlyProperty<T>(
-    private val attribute: KProperty0<T>
+open class DirectReceiverReadOnlyProperty<T>(
+    protected open val attribute: KProperty0<T>
 ) : ReadOnlyProperty<T> {
 
     override fun get(): T {

@@ -18,5 +18,5 @@ class ObjectProperty<T>(initValue: T) : Property<T> {
     override val onChange = EventHandler<Unit>()
 }
 
-fun <T> property(initValue: T) = ObjectProperty(initValue)
-fun <T> T.observe() = ObjectProperty(this)
+fun <T> property(initValue: T): Property<T> = ObjectProperty(initValue)
+fun <T> T.observe(): Property<T> = ObjectProperty(this)

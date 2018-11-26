@@ -3,7 +3,7 @@ package de.westermann.kobserve.basic
 import de.westermann.kobserve.EventHandler
 import de.westermann.kobserve.ReadOnlyProperty
 
-class TransformProperty<T, R>(
+class TransformProperty<R, T>(
     private val transform: (R) -> T,
     private val dependency: ReadOnlyProperty<R>
 ) : ReadOnlyProperty<T> {
@@ -26,5 +26,5 @@ class TransformProperty<T, R>(
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.mapBinding(transform: (R) -> T) =
+fun <T, R> ReadOnlyProperty<R>.mapBinding(transform: (R) -> T): ReadOnlyProperty<T> =
     TransformProperty(transform, this)

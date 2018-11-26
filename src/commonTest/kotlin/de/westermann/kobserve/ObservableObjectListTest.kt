@@ -1,5 +1,6 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.list.ObservableList
 import de.westermann.kobserve.list.ObservableObjectList
 import de.westermann.kobserve.list.observe
 import kotlin.test.BeforeTest
@@ -10,7 +11,7 @@ import kotlin.test.assertTrue
 class ObservableObjectListTest {
 
     private lateinit var mutableList: MutableList<Int>
-    private lateinit var observableObjectList: ObservableObjectList<Int>
+    private lateinit var observableObjectList: ObservableList<Int>
 
     @BeforeTest
     fun setupTest() {
@@ -55,7 +56,7 @@ class ObservableObjectListTest {
 
     @Test
     fun addAllTest() {
-        var index= emptySet<Int>()
+        var index = emptySet<Int>()
         observableObjectList.onAdd {
             index += it
         }

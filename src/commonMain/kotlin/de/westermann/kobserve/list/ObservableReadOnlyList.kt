@@ -18,7 +18,7 @@ interface ObservableReadOnlyList<T> : List<T>, ReadOnlyProperty<ObservableReadOn
         }
     }
 
-    override fun subList(fromIndex: Int, toIndex: Int): ObservableReadOnlySubList<T> {
+    override fun subList(fromIndex: Int, toIndex: Int): ObservableReadOnlyList<T> {
         return ObservableReadOnlySubList(this, fromIndex until toIndex)
     }
 

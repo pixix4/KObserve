@@ -5,19 +5,19 @@ import de.westermann.kobserve.ListenerReference
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty1
 
-class FlatReceiverReadOnlyProperty<T, R>(
-    private val attribute: KProperty1<R, ReadOnlyProperty<T>>,
-    private val receiver: ReadOnlyProperty<R>
+open class FlatReceiverReadOnlyProperty<R, T>(
+    protected open val attribute: KProperty1<R, ReadOnlyProperty<T>>,
+    protected val receiver: ReadOnlyProperty<R>
 ) : ReadOnlyProperty<T> {
 
-    private val property: ReadOnlyProperty<T>
+    protected open val property: ReadOnlyProperty<T>
         get() = attribute.get(receiver.value)
 
     override fun get(): T {
         return property.value
     }
 
-    override val onChange = EventHandler<Unit>()
+    final override val onChange = EventHandler<Unit>()
 
     private lateinit var reference: ListenerReference<Unit>
 
@@ -40,5 +40,5 @@ class FlatReceiverReadOnlyProperty<T, R>(
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, ReadOnlyProperty<T>>) =
+fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, ReadOnlyProperty<T>>): ReadOnlyProperty<T> =
     FlatReceiverReadOnlyProperty(attribute, this)

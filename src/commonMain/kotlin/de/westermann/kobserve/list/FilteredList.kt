@@ -46,4 +46,5 @@ class FilteredList<T>(
     }
 }
 
-fun <T> ObservableReadOnlyList<T>.filterObservable(predicate: (T) -> Boolean) = FilteredList(this, predicate)
+fun <T> ObservableReadOnlyList<T>.filterObservable(predicate: (T) -> Boolean): ObservableReadOnlyList<T> =
+    FilteredList(this, predicate)
