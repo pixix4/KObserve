@@ -2,6 +2,7 @@ package de.westermann.kobserve.basic
 
 import de.westermann.kobserve.EventHandler
 import de.westermann.kobserve.Property
+import de.westermann.kobserve.ValidationProperty
 import de.westermann.kobserve.listenTo
 
 class ValidationMappedProperty<T>(
