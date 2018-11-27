@@ -120,3 +120,11 @@ val sortedList = personList.sortObservable(Comparator { p1, p2 ->
     p1.name.compareTo(p2.name)
 })
 ```
+
+## Math extension
+```kotlin
+val number1 = property(5)
+val number2 = property(10)
+
+val calcProperty = (number1 + number2) * number1
+```
