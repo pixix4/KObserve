@@ -1,5 +1,6 @@
 package de.westermann.kobserve.basic
 
+import de.westermann.kobserve.Binding
 import de.westermann.kobserve.Property
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty1
@@ -14,8 +15,11 @@ class FlatReceiverProperty<R, T>(
         get() = attribute.get(receiver.value)
 
     override fun set(value: T) {
+        super.set(value)
         property.value = value
     }
+
+    override var binding: Binding<T> = Binding.Unbound()
 }
 
 fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, Property<T>>): Property<T> =

@@ -1,9 +1,6 @@
 package de.westermann.kobserve.basic
 
-import de.westermann.kobserve.EventHandler
-import de.westermann.kobserve.Property
-import de.westermann.kobserve.ValidationProperty
-import de.westermann.kobserve.listenTo
+import de.westermann.kobserve.*
 
 class SimpleValidationProperty<T>(
     private val property: Property<T>,
@@ -14,6 +11,7 @@ class SimpleValidationProperty<T>(
     override fun get(): T = property.get()
 
     override fun set(value: T) {
+        super.set(value)
         validProperty.value = validator(value)
         if (valid) {
             property.set(value)
@@ -22,6 +20,7 @@ class SimpleValidationProperty<T>(
 
     override val validProperty = property(true)
     override val valid by validProperty
+    override var binding: Binding<T> = Binding.Unbound()
 
     init {
         onChange.listenTo(property.onChange)

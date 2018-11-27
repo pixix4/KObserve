@@ -16,7 +16,7 @@ open class DirectReceiverReadOnlyProperty<T>(
 
 }
 
-fun <T> property(attribute: KProperty0<T>) =
+fun <T> property(attribute: KProperty0<T>): ReadOnlyProperty<T> =
     DirectReceiverReadOnlyProperty(attribute)
 
-fun <T> KProperty0<T>.observe() = DirectReceiverReadOnlyProperty(this)
+fun <T> KProperty0<T>.observe(): ReadOnlyProperty<T> = DirectReceiverReadOnlyProperty(this)

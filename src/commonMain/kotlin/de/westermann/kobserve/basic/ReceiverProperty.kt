@@ -1,5 +1,6 @@
 package de.westermann.kobserve.basic
 
+import de.westermann.kobserve.Binding
 import de.westermann.kobserve.Property
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KMutableProperty1
@@ -12,11 +13,14 @@ class ReceiverProperty<R, T>(
     override var internal: T = attribute.get(receiver.value)
 
     override fun set(value: T) {
+        super.set(value)
         if (internal != value) {
             attribute.set(receiver.value, value)
             receiver.onChange.emit(Unit)
         }
     }
+
+    override var binding: Binding<T> = Binding.Unbound()
 }
 
 fun <T, R> ReadOnlyProperty<R>.mapBinding(attribute: KMutableProperty1<R, T>): Property<T> =

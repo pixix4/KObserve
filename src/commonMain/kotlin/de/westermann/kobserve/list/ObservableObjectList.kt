@@ -178,7 +178,7 @@ class ObservableObjectList<T>(
     }
 }
 
-fun <T> property(list: MutableList<T>): ObservableList<T> = ObservableObjectList(list)
+fun <T> listProperty(list: MutableList<T>): ObservableList<T> = ObservableObjectList(list)
 fun <T> MutableList<T>.observe(): ObservableList<T> = ObservableObjectList(this)
 fun <T> observableListOf(vararg elements: T): ObservableList<T> =
     ObservableObjectList(mutableListOf(*elements))
