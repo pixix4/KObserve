@@ -14,11 +14,13 @@ class ExtensionsTest {
         val and = boolA and boolB
         val or = boolA or boolB
         val xor = boolA xor boolB
+        val implies = boolA implies boolB
         val not = !boolA
 
         assertEquals(false, and.value)
         assertEquals(false, or.value)
         assertEquals(false, xor.value)
+        assertEquals(true, implies.value)
         assertEquals(true, not.value)
 
         boolB.value = true
@@ -26,6 +28,7 @@ class ExtensionsTest {
         assertEquals(false, and.value)
         assertEquals(true, or.value)
         assertEquals(true, xor.value)
+        assertEquals(true, implies.value)
 
         boolA.value = true
 
@@ -33,12 +36,14 @@ class ExtensionsTest {
         assertEquals(true, or.value)
         assertEquals(false, xor.value)
         assertEquals(false, not.value)
+        assertEquals(true, implies.value)
 
         boolB.value = false
 
         assertEquals(false, and.value)
         assertEquals(true, or.value)
         assertEquals(true, xor.value)
+        assertEquals(false, implies.value)
     }
 
     @Test
