@@ -11,4 +11,3 @@ rootProject.name = 'KObserve'
 
 
 enableFeaturePreview('GRADLE_METADATA')
-enableFeaturePreview('STABLE_PUBLISHING')
