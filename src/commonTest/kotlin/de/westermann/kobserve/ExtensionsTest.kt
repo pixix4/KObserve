@@ -248,6 +248,7 @@ class ExtensionsTest {
 
         assertEquals(list.sum(), sum.value)
     }
+
     @Test
     fun testListAverage() {
         val list = observableListOf(1, 2, 3, 4, 5)
@@ -258,5 +259,16 @@ class ExtensionsTest {
         list += 6
 
         assertEquals(list.average(), average.value)
+    }
+
+    @Test
+    fun test() {
+        val number1 = property(2)
+        val number2 = property(10)
+        val number3 = property(5.0)
+        val number4 = property(7)
+
+        val calc = ((1 - number1) * number2 / 5) % number4 * number3 + 1337
+        assertEquals(calc, calc)
     }
 }
