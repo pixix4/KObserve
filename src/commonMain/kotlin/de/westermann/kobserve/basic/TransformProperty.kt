@@ -26,5 +26,5 @@ class TransformProperty<R, T>(
     }
 }
 
-fun <T, R> ReadOnlyProperty<R>.mapBinding(transform: (R) -> T): ReadOnlyProperty<T> =
+fun <R, T> ReadOnlyProperty<R>.mapBinding(transform: (R) -> T): ReadOnlyProperty<T> =
     TransformProperty(transform, this)

@@ -1,6 +1,7 @@
 package de.westermann.kobserve
 
 import de.westermann.kobserve.basic.mapBinding
+import de.westermann.kobserve.basic.property
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -8,7 +9,7 @@ class ReceiverPropertyTest {
 
     @Test
     fun receiverPropertyTest() {
-        val userProperty = de.westermann.kobserve.basic.property(Person("John", "Doe"))
+        val userProperty = property(Person("John", "Doe"))
         var user by userProperty
 
         val firstNameProperty = userProperty.mapBinding(Person::firstName)

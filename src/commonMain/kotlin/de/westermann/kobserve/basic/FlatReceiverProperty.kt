@@ -7,20 +7,17 @@ import kotlin.reflect.KProperty1
 
 
 class FlatReceiverProperty<R, T>(
-    override val attribute: KProperty1<R, Property<T>>,
+    val mutableAttribute: KProperty1<R, Property<T>>,
     receiver: ReadOnlyProperty<R>
-) : FlatReceiverReadOnlyProperty<R, T>(attribute, receiver), Property<T> {
-
-    override val property: Property<T>
-        get() = attribute.get(receiver.value)
+) : FlatReceiverReadOnlyProperty<R, T>(mutableAttribute, receiver), Property<T> {
 
     override fun set(value: T) {
         super.set(value)
-        property.value = value
+        mutableAttribute.get(receiver.value).value = value
     }
 
     override var binding: Binding<T> = Binding.Unbound()
 }
 
-fun <T, R> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, Property<T>>): Property<T> =
+fun <R, T> ReadOnlyProperty<R>.flatMapBinding(attribute: KProperty1<R, Property<T>>): Property<T> =
     FlatReceiverProperty(attribute, this)
