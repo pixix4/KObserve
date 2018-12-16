@@ -6,7 +6,7 @@ import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty1
 
 open class FlatMapReadOnlyProperty<R, T>(
-    protected val transform: (R) -> ReadOnlyProperty<T>,
+    private val transform: (R) -> ReadOnlyProperty<T>,
     protected val receiver: ReadOnlyProperty<R>
 ) : ReadOnlyProperty<T> {
 

@@ -1,5 +1,6 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.basic.mapBinding
 import de.westermann.kobserve.list.ObservableList
 import de.westermann.kobserve.list.ObservableObjectList
 import de.westermann.kobserve.list.observe
@@ -24,6 +25,15 @@ class ObservableObjectListTest {
     @Test
     fun equalsTest() {
         assertEquals(mutableList, observableObjectList)
+    }
+
+    @Test
+    fun mappingTest() {
+        val emptyProperty = observableObjectList.mapBinding { it.size <= 0 }
+
+        assertEquals(false, emptyProperty.value)
+        observableObjectList.clear()
+        assertEquals(true, emptyProperty.value)
     }
 
     @Test

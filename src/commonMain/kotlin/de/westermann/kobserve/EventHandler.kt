@@ -82,6 +82,9 @@ open class EventHandler<T>() : Collection<(T) -> Unit> {
         return addListener(listener)?.let { ListenerReference(this, it) }
     }
 
+    /**
+     * Returns the count of assigned event listeners.
+     */
     override val size: Int
         get() = listeners.size
 
@@ -108,6 +111,12 @@ open class EventHandler<T>() : Collection<(T) -> Unit> {
     }
 }
 
+/**
+ * Utility function that allows simple event binding of an unit event to another generic event.
+ *
+ * @param handler An generic event handler to listen to.
+ * @receiver The unit event handler that should listen.
+ */
 fun EventHandler<Unit>.listenTo(handler: EventHandler<*>) {
     handler {
         emit(Unit)

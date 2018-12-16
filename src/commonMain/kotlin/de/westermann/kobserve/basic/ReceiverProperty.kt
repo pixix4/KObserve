@@ -23,5 +23,11 @@ class ReceiverProperty<R, T>(
     override var binding: Binding<T> = Binding.Unbound()
 }
 
+/**
+ * Maps the given property to an mutable field attribute.
+ * The returned property supports invalidation.
+ *
+ * @param attribute The mutable field attribute.
+ */
 fun <T, R> ReadOnlyProperty<R>.mapBinding(attribute: KMutableProperty1<R, T>): Property<T> =
     ReceiverProperty(attribute, this)

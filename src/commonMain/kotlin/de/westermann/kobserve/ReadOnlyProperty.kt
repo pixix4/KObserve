@@ -3,7 +3,7 @@ package de.westermann.kobserve
 import kotlin.reflect.KProperty
 
 /**
- * Represents a read only property of type 'T'.
+ * Represents a readonly property of type 'T'.
  */
 interface ReadOnlyProperty<T> {
 
@@ -24,4 +24,10 @@ interface ReadOnlyProperty<T> {
      * Change event handler is called whenever the properties value is changed.
      */
     val onChange: EventHandler<Unit>
+
+    /**
+     * If the properties uses an external backing field this method checks for external data changes und eventually
+     * emits an onChange event. Otherwise this method does nothing.
+     */
+    fun invalidate() {}
 }

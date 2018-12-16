@@ -28,21 +28,22 @@ class FunctionProperty<T>(
 }
 
 interface FunctionAccessor<T> : FunctionReadOnlyAccessor<T> {
+    /**
+     * Perform the set operation of a property.
+     *
+     * @param value The new value that should be applied.
+     * @return Should return true if the value was accepted. The return value will be the new valid flag.
+     */
     fun set(value: T): Boolean
 }
 
+/**
+ * Create a validation property that calls the given function accessor on every get and set operation.
+ *
+ * @param functionAccessor The function accessor to call.
+ * @param properties The new property will listen to their onChange events.
+ */
 fun <T> property(
     functionAccessor: FunctionAccessor<T>,
     vararg properties: ReadOnlyProperty<*>
 ): Property<T> = FunctionProperty(functionAccessor, *properties)
-
-fun <A, B, C> ReadOnlyProperty<A>.join(
-    property2: ReadOnlyProperty<B>,
-    block: (A, B) -> C
-): ReadOnlyProperty<C> {
-    return FunctionReadOnlyProperty(object : FunctionReadOnlyAccessor<C> {
-        override fun get(): C {
-            return block(this@join.value, property2.value)
-        }
-    }, this, property2)
-}

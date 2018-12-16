@@ -21,16 +21,26 @@ open class ReceiverReadOnlyProperty<R, T>(
 
     final override val onChange = EventHandler<Unit>()
 
+    override fun invalidate() {
+        val newValue = attribute.get(receiver.value)
+        if (newValue != internal) {
+            internal = newValue
+            onChange.emit(Unit)
+        }
+    }
+
     init {
         receiver.onChange {
-            val newValue = attribute.get(receiver.value)
-            if (newValue != internal) {
-                internal = newValue
-                onChange.emit(Unit)
-            }
+            invalidate()
         }
     }
 }
 
+/**
+ * Maps the given property to an readonly field attribute.
+ * The returned property supports invalidation.
+ *
+ * @param attribute The readonly field attribute.
+ */
 fun <T, R> ReadOnlyProperty<R>.mapBinding(attribute: KProperty1<R, T>): ReadOnlyProperty<T> =
     ReceiverReadOnlyProperty(attribute, this)

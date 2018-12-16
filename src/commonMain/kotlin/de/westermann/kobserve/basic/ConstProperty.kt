@@ -10,4 +10,9 @@ class ConstProperty<T>(private val internal: T) : ReadOnlyProperty<T> {
     override val onChange = EventHandler<Unit>()
 }
 
+/**
+ * Create an constant property that cannot change.
+ *
+ * @param value The constant value.
+ */
 fun <T> constProperty(value: T): ReadOnlyProperty<T> = ConstProperty(value)

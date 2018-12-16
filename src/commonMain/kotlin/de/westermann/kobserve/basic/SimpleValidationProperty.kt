@@ -27,4 +27,7 @@ class SimpleValidationProperty<T>(
     }
 }
 
+/**
+ * Apply an validation function to the given property.
+ */
 fun <T> Property<T>.validate(validator: (T) -> Boolean): ValidationProperty<T> = SimpleValidationProperty(this, validator)

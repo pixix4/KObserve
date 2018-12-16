@@ -5,7 +5,7 @@ import de.westermann.kobserve.Property
 import kotlin.reflect.KMutableProperty0
 
 class DirectReceiverProperty<T>(
-    override val attribute: KMutableProperty0<T>
+    private val attribute: KMutableProperty0<T>
 ) : DirectReceiverReadOnlyProperty<T>(attribute), Property<T> {
 
     override fun set(value: T) {
