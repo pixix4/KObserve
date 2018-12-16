@@ -56,6 +56,17 @@ jacoco {
     toolVersion = "0.8.2"
 }
 
+task jacocoTestReport(type: JacocoReport, dependsOn: jvmTest) {
+    additionalSourceDirs = files("$projectDir/src/commonMain/kotlin")
+    additionalClassDirs = files("$buildDir/classes/kotlin/jvm/main")
+    reports {
+        xml.enabled true
+    }
+    executionData = files("$buildDir/jacoco/jvmTest.exec")
+}
+
+check.dependsOn jacocoTestReport
+
 publishing {
     publications {
         jvm(MavenPublication) {
