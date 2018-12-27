@@ -63,6 +63,11 @@ task jacocoTestReport(type: JacocoReport, dependsOn: jvmTest) {
         xml.enabled true
     }
     executionData = files("$buildDir/jacoco/jvmTest.exec")
+    afterEvaluate {
+        additionalClassDirs = files(additionalClassDirs.files.collect {
+            fileTree(dir: it, exclude: 'de/westermann/kobserve/Extensions*')
+        })
+    }
 }
 
 check.dependsOn jacocoTestReport
