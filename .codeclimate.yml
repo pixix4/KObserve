@@ -1,0 +1,3 @@
+exclude_patterns:
+  - "scripts/"
+  - "src/commonMain/kotlin/de/westermann/kobserve/Extensions.kt"
