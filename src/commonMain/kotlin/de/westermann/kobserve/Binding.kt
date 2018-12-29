@@ -3,7 +3,7 @@ package de.westermann.kobserve
 /**
  * Represents the current binding state,
  */
-sealed class Binding<T>() {
+sealed class Binding<T> {
 
     /**
      * Returns the current binding state.
@@ -24,6 +24,20 @@ sealed class Binding<T>() {
     open fun checkWrite(value: T) {}
 
     /**
+     * Create an event listener that listens to source and applies all changes to target
+     */
+    protected fun listen(
+        source: ReadOnlyProperty<T>,
+        target: Property<T>
+    ): ListenerReference<Unit> =
+        source.onChange.reference {
+            val newValue = source.value
+            if (target.value != newValue) {
+                target.value = newValue
+            }
+        }!!
+
+    /**
      * Represents an unbound property state.
      */
     class Unbound<T> : Binding<T>() {
@@ -33,12 +47,12 @@ sealed class Binding<T>() {
     /**
      * Represents an readonly binding state.
      */
-    class ReadOnlyBinding<T>(val property: Property<T>, val target: ReadOnlyProperty<T>) : Binding<T>() {
+    class ReadOnlyBinding<T>(property: Property<T>, private val target: ReadOnlyProperty<T>) : Binding<T>() {
 
-        private var targetReference: ListenerReference<Unit>?
+        private val targetReference: ListenerReference<Unit>
 
         override fun unbind() {
-            targetReference?.remove()
+            targetReference.remove()
         }
 
         override fun checkWrite(value: T) {
@@ -50,44 +64,28 @@ sealed class Binding<T>() {
         init {
             property.value = target.value
 
-            targetReference = target.onChange.reference {
-                val newValue = target.value
-                if (property.value != newValue) {
-                    property.value = newValue
-                }
-            }
+            targetReference = listen(target, property)
         }
     }
 
     /**
      * Represents a bidirectional binding state.
      */
-    class BidirectionalBinding<T>(val property: Property<T>, val target: Property<T>) : Binding<T>() {
+    class BidirectionalBinding<T>(property: Property<T>, target: Property<T>) : Binding<T>() {
 
-        private var propertyReference: ListenerReference<Unit>?
-        private var targetReference: ListenerReference<Unit>?
+        private val propertyReference: ListenerReference<Unit>
+        private val targetReference: ListenerReference<Unit>
 
         override fun unbind() {
-            propertyReference?.remove()
-            targetReference?.remove()
+            propertyReference.remove()
+            targetReference.remove()
         }
 
         init {
             property.value = target.value
 
-            propertyReference = property.onChange.reference {
-                val newValue = property.value
-                if (target.value != newValue) {
-                    target.value = newValue
-                }
-            }
-
-            targetReference = target.onChange.reference {
-                val newValue = target.value
-                if (property.value != newValue) {
-                    property.value = newValue
-                }
-            }
+            propertyReference = listen(target, property)
+            targetReference = listen(property, target)
         }
     }
 }

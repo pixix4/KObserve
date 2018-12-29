@@ -29,14 +29,22 @@ class ListenerReferenceTest {
         assertTrue(reference.isAdded)
         assertFalse(reference.isRemoved)
 
-        reference.remove()
+        assertTrue(reference.remove())
 
         assertFalse(reference.isAdded)
         assertTrue(reference.isRemoved)
 
-        reference.add()
+        assertFalse(reference.remove())
+
+        assertTrue(reference.add())
 
         assertTrue(reference.isAdded)
         assertFalse(reference.isRemoved)
+
+        assertFalse(reference.add())
+
+        assertEquals(handler, reference.handler)
+        reference.listener(1)
+        assertEquals(1, callCount)
     }
 }

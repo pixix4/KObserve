@@ -3,7 +3,7 @@ package de.westermann.kobserve
 /**
  * This class represents a simple event handler who manages listeners for an event of type 'T'.
  */
-open class EventHandler<T>() : Collection<(T) -> Unit> {
+open class EventHandler<T>() {
 
     private var listeners: Set<(T) -> Unit> = emptySet()
 
@@ -85,22 +85,22 @@ open class EventHandler<T>() : Collection<(T) -> Unit> {
     /**
      * Returns the count of assigned event listeners.
      */
-    override val size: Int
+    val size: Int
         get() = listeners.size
 
-    override fun contains(element: (T) -> Unit): Boolean {
+    operator fun contains(element: (T) -> Unit): Boolean {
         return listeners.contains(element)
     }
 
-    override fun containsAll(elements: Collection<(T) -> Unit>): Boolean {
+    fun containsAll(elements: Collection<(T) -> Unit>): Boolean {
         return listeners.containsAll(elements)
     }
 
-    override fun isEmpty(): Boolean {
+    fun isEmpty(): Boolean {
         return listeners.isEmpty()
     }
 
-    override fun iterator(): Iterator<(T) -> Unit> {
+    operator fun iterator(): Iterator<(T) -> Unit> {
         return listeners.iterator()
     }
 

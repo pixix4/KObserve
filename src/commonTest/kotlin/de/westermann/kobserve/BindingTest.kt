@@ -26,7 +26,21 @@ class BindingTest {
         assertEquals(0, stateCalls)
         assertEquals(0, indicatorCalls)
 
+        assertFailsWith(IllegalStateException::class) {
+            indicatorProperty.binding.unbind()
+        }
+        assertFailsWith(IllegalStateException::class) {
+            indicatorProperty.unbind()
+        }
+        assertFailsWith(IllegalStateException::class) {
+            stateProperty.unbind()
+        }
+
         indicatorProperty.bind(stateProperty)
+
+        assertFailsWith(IllegalStateException::class) {
+            indicatorProperty.bind(stateProperty)
+        }
 
         assertEquals(0, stateProperty.value)
         assertEquals(0, indicatorProperty.value)
@@ -78,7 +92,18 @@ class BindingTest {
         assertEquals(0, stateCalls)
         assertEquals(0, indicatorCalls)
 
+        assertFailsWith(IllegalStateException::class) {
+            indicatorProperty.unbind()
+        }
+        assertFailsWith(IllegalStateException::class) {
+            stateProperty.unbind()
+        }
+
         indicatorProperty.bindBidirectional(stateProperty)
+        
+        assertFailsWith(IllegalStateException::class) {
+            indicatorProperty.bindBidirectional(stateProperty)
+        }
 
         assertEquals(0, stateProperty.value)
         assertEquals(0, indicatorProperty.value)
