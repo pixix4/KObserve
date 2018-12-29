@@ -22,6 +22,10 @@ class SimpleValidationProperty<T>(
     override val valid by validProperty
     override var binding: Binding<T> = Binding.Unbound()
 
+    override fun invalidate() {
+        validProperty.value = true
+    }
+
     init {
         onChange.listenTo(property.onChange)
     }

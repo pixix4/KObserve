@@ -1,9 +1,6 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.list
 
 import de.westermann.kobserve.basic.mapBinding
-import de.westermann.kobserve.list.ObservableList
-import de.westermann.kobserve.list.ObservableObjectList
-import de.westermann.kobserve.list.observe
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

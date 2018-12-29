@@ -1,4 +1,4 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
 
 import de.westermann.kobserve.basic.mapBinding
 import de.westermann.kobserve.basic.property

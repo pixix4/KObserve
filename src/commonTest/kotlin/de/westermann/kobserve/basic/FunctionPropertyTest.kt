@@ -1,8 +1,5 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
 
-import de.westermann.kobserve.basic.FunctionAccessor
-import de.westermann.kobserve.basic.FunctionReadOnlyAccessor
-import de.westermann.kobserve.basic.property
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

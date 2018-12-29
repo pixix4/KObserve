@@ -1,22 +1,22 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
 
-import de.westermann.kobserve.basic.observe
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class DirectReceiverPropertyTest {
+class ReceiverPropertyTest {
 
     @Test
-    fun directReceiverPropertyTest() {
-        val user = Person("John", "Doe")
+    fun receiverPropertyTest() {
+        val userProperty = property(Person("John", "Doe"))
+        var user by userProperty
 
-        val firstNameProperty = de.westermann.kobserve.basic.property(user::firstName)
+        val firstNameProperty = userProperty.mapBinding(Person::firstName)
         val firstName by firstNameProperty
 
-        val lastNameProperty = user::lastName.observe()
+        val lastNameProperty = userProperty.mapBinding(Person::lastName)
         val lastName by lastNameProperty
 
-        val ageProperty = de.westermann.kobserve.basic.property(user::age)
+        val ageProperty = userProperty.mapBinding(Person::age)
         var age by ageProperty
 
         var firstNameCount = 0
@@ -40,6 +40,14 @@ class DirectReceiverPropertyTest {
 
         assertEquals(22, age)
         assertEquals(22, user.age)
+
+        user = Person("Jana", "Doe")
+        assertEquals("Jana", user.firstName)
+        assertEquals("Jana", firstName)
+        assertEquals(21, age)
+
+        assertEquals(1, firstNameCount)
+        assertEquals(2, ageCount)
     }
 
 

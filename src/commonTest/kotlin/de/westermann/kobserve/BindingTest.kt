@@ -100,7 +100,7 @@ class BindingTest {
         }
 
         indicatorProperty.bindBidirectional(stateProperty)
-        
+
         assertFailsWith(IllegalStateException::class) {
             indicatorProperty.bindBidirectional(stateProperty)
         }

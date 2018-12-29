@@ -1,6 +1,7 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.basic
 
-import de.westermann.kobserve.basic.*
+import de.westermann.kobserve.Property
+import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.math.pow
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,22 +23,38 @@ class FlatPropertyTest {
         assertEquals(person.age * 2, age2xProperty.value)
         assertEquals(person.age * 4, age4xProperty.value)
 
+
+        var firstName by firstNameProperty
+        val lastName by lastNameProperty
+
+        var age2x by age2xProperty
+        val agePower by agePowerProperty
+
         person.age = 22
 
         assertEquals("Doe", lastNameProperty.value)
+        assertEquals("Doe", lastName)
         assertEquals(person.age * 2, age2xProperty.value)
+        assertEquals(person.age * 2, age2x)
         assertEquals(person.age * 4, age4xProperty.value)
         assertEquals(person.age.toDouble().pow(2.0), agePowerProperty.value)
+        assertEquals(person.age.toDouble().pow(2.0), agePower)
 
         person = Person("Max", "Mustermann", 25)
 
         assertEquals("Max", firstNameProperty.value)
+        assertEquals("Max", firstName)
+        firstName = "Maxa"
+        firstNameProperty.value = "Maxa"
+        assertEquals("Maxa", firstName)
         assertEquals(person.age * 2, age2xProperty.value)
         assertEquals(person.age * 4, age4xProperty.value)
 
         age2xProperty.value = 26
+        age2x = 26
         assertEquals(13, person.age)
         assertEquals(52, age4xProperty.value)
+        assertEquals(26, age2x)
         assertEquals(13.0.pow(2.0), agePowerProperty.value)
     }
 
