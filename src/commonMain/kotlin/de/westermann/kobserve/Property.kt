@@ -12,6 +12,9 @@ interface Property<T> : ReadOnlyProperty<T> {
      */
     var binding: Binding<T>
 
+    val isWritable: Boolean
+        get() = binding.isWritable
+
     /**
      * Set the current value.
      */

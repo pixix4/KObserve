@@ -11,6 +11,8 @@ sealed class Binding<T> {
     val isBound: Boolean
         get() = this !is Unbound<T>
 
+    abstract val isWritable: Boolean
+
     /**
      * Unbound all corresponding properties.
      */
@@ -41,6 +43,7 @@ sealed class Binding<T> {
      * Represents an unbound property state.
      */
     class Unbound<T> : Binding<T>() {
+        override val isWritable: Boolean = true
         override fun unbind() = throw IllegalStateException("Property is currently not bounded!")
     }
 
@@ -48,6 +51,8 @@ sealed class Binding<T> {
      * Represents an readonly binding state.
      */
     class ReadOnlyBinding<T>(property: Property<T>, private val target: ReadOnlyProperty<T>) : Binding<T>() {
+
+        override val isWritable: Boolean = false
 
         private val targetReference: ListenerReference<Unit>
 
@@ -71,7 +76,10 @@ sealed class Binding<T> {
     /**
      * Represents a bidirectional binding state.
      */
-    class BidirectionalBinding<T>(property: Property<T>, target: Property<T>) : Binding<T>() {
+    class BidirectionalBinding<T>(property: Property<T>, private val target: Property<T>) : Binding<T>() {
+
+        override val isWritable: Boolean
+            get() = target.isWritable
 
         private val propertyReference: ListenerReference<Unit>
         private val targetReference: ListenerReference<Unit>

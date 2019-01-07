@@ -1,9 +1,7 @@
 package de.westermann.kobserve
 
 import de.westermann.kobserve.basic.property
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.*
 
 class BindingTest {
 
@@ -36,7 +34,11 @@ class BindingTest {
             stateProperty.unbind()
         }
 
+        assertTrue(indicatorProperty.isWritable)
+
         indicatorProperty.bind(stateProperty)
+
+        assertFalse(indicatorProperty.isWritable)
 
         assertFailsWith(IllegalStateException::class) {
             indicatorProperty.bind(stateProperty)
@@ -100,6 +102,8 @@ class BindingTest {
         }
 
         indicatorProperty.bindBidirectional(stateProperty)
+
+        assertTrue(indicatorProperty.isWritable)
 
         assertFailsWith(IllegalStateException::class) {
             indicatorProperty.bindBidirectional(stateProperty)
