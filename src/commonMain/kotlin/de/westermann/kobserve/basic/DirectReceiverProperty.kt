@@ -10,7 +10,8 @@ class DirectReceiverProperty<T>(
 
     override fun set(value: T) {
         super.set(value)
-        if (get() != value) {
+        if (internal != value) {
+            internal = value
             attribute.set(value)
             onChange.emit(Unit)
         }

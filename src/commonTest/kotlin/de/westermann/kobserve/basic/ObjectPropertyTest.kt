@@ -23,6 +23,8 @@ class ObjectPropertyTest {
 
         test = 2
 
+        testProperty.invalidate()
+
         assertEquals(2, test)
         assertEquals(2, delayedValue)
     }

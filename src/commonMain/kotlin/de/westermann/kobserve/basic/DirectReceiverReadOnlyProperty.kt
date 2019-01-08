@@ -8,8 +8,23 @@ open class DirectReceiverReadOnlyProperty<T>(
     private val attribute: KProperty0<T>
 ) : ReadOnlyProperty<T> {
 
+    protected open var internal: T = attribute.get()
+
     override fun get(): T {
-        return attribute.get()
+        val newValue = attribute.get()
+        if (newValue != internal) {
+            internal = newValue
+            onChange.emit(Unit)
+        }
+        return newValue
+    }
+
+    override fun invalidate() {
+        val newValue = attribute.get()
+        if (newValue != internal) {
+            internal = newValue
+            onChange.emit(Unit)
+        }
     }
 
     override val onChange = EventHandler<Unit>()
