@@ -3,7 +3,7 @@ package de.westermann.kobserve
 /**
  * This class represents a simple event handler who manages listeners for an event of type 'T'.
  */
-open class EventHandler<T>() {
+class EventHandler<T>() {
 
     private var listeners: Set<(T) -> Unit> = emptySet()
 
@@ -20,6 +20,7 @@ open class EventHandler<T>() {
         }
 
         listeners += listener
+        onAttach()
         return listener
     }
 
@@ -29,14 +30,20 @@ open class EventHandler<T>() {
      * @param listener The event listener to remove.
      */
     fun removeListener(listener: (T) -> Unit) {
-        listeners -= listener
+        if (listener in listeners) {
+            listeners -= listener
+            onDetach()
+        }
     }
 
     /**
      * Remove all event listeners from this handler.
      */
     fun clearListeners() {
-        listeners = emptySet()
+        if (listeners.isNotEmpty()) {
+            listeners = emptySet()
+            onDetach()
+        }
     }
 
     /**
@@ -103,6 +110,9 @@ open class EventHandler<T>() {
     operator fun iterator(): Iterator<(T) -> Unit> {
         return listeners.iterator()
     }
+
+    var onAttach: () -> Unit = {}
+    var onDetach: () -> Unit = {}
 
     constructor(vararg dependencies: EventHandler<T>) : this() {
         dependencies.forEach {

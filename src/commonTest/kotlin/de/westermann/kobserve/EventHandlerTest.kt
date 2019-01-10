@@ -15,14 +15,20 @@ class EventHandlerTest {
     fun addListenerTest() {
         assertEquals(0, handler.size, "Handler was not empty!")
 
+        var count = 0
+        handler.onAttach = { count += 1 }
+        handler.onDetach = { fail() }
         val listener: (Int) -> Unit = {}
+        assertEquals(0, count)
         handler.addListener {}
+        assertEquals(1, count)
         handler += listener
+        assertEquals(2, count)
         assertEquals(2, handler.size, "Listener was not added!")
     }
 
     @Test
-    fun addListenerMultipeTimesTest() {
+    fun addListenerMultipleTimesTest() {
         assertEquals(0, handler.size, "Handler was not empty!")
         assertTrue(handler.isEmpty(), "Handler was not empty!")
 
@@ -47,11 +53,20 @@ class EventHandlerTest {
         assertEquals(1, handler.size, "Listener was not added!")
         assertFalse(handler.isEmpty(), "Listener was not added!")
 
+        var count = 0
+        handler.onDetach = { count += 1 }
+        handler.onAttach = { fail() }
+        assertEquals(0, count)
+
         handler.removeListener(listener)
         assertEquals(0, handler.size, "Listener was not removed!")
         assertTrue(handler.isEmpty(), "Listener was not removed!")
 
+        assertEquals(1, count)
+
         handler -= listener
+
+        assertEquals(1, count)
 
         handler.emit(0)
     }
