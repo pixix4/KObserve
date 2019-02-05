@@ -29,7 +29,7 @@ sealed class Binding<T> {
      * Create an event listener that listens to source and applies all changes to target
      */
     protected fun listen(
-        source: ReadOnlyProperty<T>,
+        source: ReadOnlyProperty<out T>,
         target: Property<T>
     ): ListenerReference<Unit> =
         source.onChange.reference {
@@ -50,7 +50,7 @@ sealed class Binding<T> {
     /**
      * Represents an readonly binding state.
      */
-    class ReadOnlyBinding<T>(property: Property<T>, private val target: ReadOnlyProperty<T>) : Binding<T>() {
+    class ReadOnlyBinding<T>(property: Property<T>, private val target: ReadOnlyProperty<out T>) : Binding<T>() {
 
         override val isWritable: Boolean = false
 

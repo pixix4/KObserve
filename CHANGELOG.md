@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2019-02-05
+### Changed
+- Update to kotlin `1.3.20`.
+- Switch to js module kind `umd`.
+- Allow out projection by read only binding.
+
 ## [0.7.0] - 2019-01-10
 ### Added
 - `onAttach` and `onDetach` in `EventHandler`

@@ -45,7 +45,7 @@ interface Property<T> : ReadOnlyProperty<T> {
      *
      * @throws IllegalStateException if this property is already bound.
      */
-    fun bind(target: ReadOnlyProperty<T>) {
+    fun bind(target: ReadOnlyProperty<out T>) {
         if (isBound) {
             throw IllegalStateException("Property is already bound!")
         }
