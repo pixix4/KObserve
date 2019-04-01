@@ -94,14 +94,12 @@ abstract class RelationalList<T>(
             }
         }
         parent.onRemove { oldIndex ->
-            updateRelation()
             val index = relation.indexOf(oldIndex)
+            updateRelation()
             if (index >= 0) {
                 onRemove.emit(index)
                 onChange.emit(Unit)
             }
         }
     }
-
-
 }
