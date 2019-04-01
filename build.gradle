@@ -1,12 +1,13 @@
 plugins {
-    id 'kotlin-multiplatform' version '1.3.20'
+    id 'kotlin-multiplatform' version '1.3.21'
+    id "com.jfrog.bintray" version "1.8.4"
 }
 
 repositories {
     mavenCentral()
 }
 group 'de.westermann'
-version '0.8.0'
+version '0.8.1'
 
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
@@ -185,6 +186,25 @@ publishing {
     repositories {
         maven {
             url = "$buildDir/repos/releases"
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+
+    publications = ['jvm','js','metadata', 'kotlinMultiplatform']
+
+    pkg {
+        repo = 'maven'
+        name = 'KObserve'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/pixix4/KObserve.git'
+
+        version {
+            name = project.version
+            released  = new Date()
         }
     }
 }

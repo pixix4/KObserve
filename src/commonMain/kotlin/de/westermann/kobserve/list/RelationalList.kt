@@ -89,7 +89,7 @@ abstract class RelationalList<T>(
             updateRelation()
             val index = relation.indexOf(oldIndex)
             if (index >= 0) {
-                onAdd.emit(index)
+                onUpdate.emit(index)
                 onChange.emit(Unit)
             }
         }
@@ -97,7 +97,7 @@ abstract class RelationalList<T>(
             updateRelation()
             val index = relation.indexOf(oldIndex)
             if (index >= 0) {
-                onAdd.emit(index)
+                onRemove.emit(index)
                 onChange.emit(Unit)
             }
         }
