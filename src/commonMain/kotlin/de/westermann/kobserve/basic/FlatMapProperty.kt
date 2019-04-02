@@ -20,3 +20,6 @@ class FlatMapProperty<R, T>(
 
 fun <T, R> ReadOnlyProperty<R>.flatMapBinding(transform: (R) -> Property<T>): Property<T> =
     FlatMapProperty(transform, this)
+
+fun <T> ReadOnlyProperty<Property<T>>.flatten(): Property<T> =
+    FlatMapProperty({ it }, this)

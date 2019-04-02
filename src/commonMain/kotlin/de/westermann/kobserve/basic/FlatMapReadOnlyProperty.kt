@@ -3,7 +3,6 @@ package de.westermann.kobserve.basic
 import de.westermann.kobserve.EventHandler
 import de.westermann.kobserve.ListenerReference
 import de.westermann.kobserve.ReadOnlyProperty
-import kotlin.reflect.KProperty1
 
 open class FlatMapReadOnlyProperty<R, T>(
     private val transform: (R) -> ReadOnlyProperty<T>,
@@ -39,3 +38,9 @@ open class FlatMapReadOnlyProperty<R, T>(
 
 fun <R, T> ReadOnlyProperty<R>.flatMapReadOnlyBinding(transform: (R) -> ReadOnlyProperty<T>): ReadOnlyProperty<T> =
     FlatMapReadOnlyProperty(transform, this)
+
+fun <T> ReadOnlyProperty<ReadOnlyProperty<T>>.flatten(): ReadOnlyProperty<T> =
+    FlatMapReadOnlyProperty({ it }, this)
+
+fun <T> ReadOnlyProperty<ReadOnlyProperty<T>>.flattenReadOnly(): ReadOnlyProperty<T> =
+    FlatMapReadOnlyProperty({ it }, this)
