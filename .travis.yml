@@ -10,7 +10,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - ./gradlew check build
-  - if [ -n "$TRAVIS_TAG" ]; then ./gradlew build publish bintrayPublish; fi
 after_script:
+  - if [ -n "$TRAVIS_TAG" ]; then ./gradlew build publish bintrayUpload bintrayPublish; fi
   - JACOCO_SOURCE_PATH=src/commonMain/kotlin ./cc-test-reporter format-coverage ./build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml --input-type jacoco
   - ./cc-test-reporter upload-coverage

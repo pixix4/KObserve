@@ -197,6 +197,8 @@ bintray {
 
     publications = ['jvm','js','metadata', 'kotlinMultiplatform']
 
+    publish = true
+
     pkg {
         repo = 'maven'
         name = 'KObserve'

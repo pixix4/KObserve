@@ -42,11 +42,14 @@ open class ObservableReadOnlySubList<T>(
         get() = range.count()
 
     override fun contains(element: T): Boolean {
-        return (0 until size).map(this::get).contains(element)
+        for (elem in this) {
+            if (elem == element) return true
+        }
+        return false
     }
 
     override fun containsAll(elements: Collection<T>): Boolean {
-        return (0 until size).map(this::get).containsAll(elements)
+        return elements.all { contains(it) }
     }
 
     override fun get(index: Int): T {
