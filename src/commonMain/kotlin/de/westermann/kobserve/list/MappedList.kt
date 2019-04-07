@@ -1,6 +1,6 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.event.EventHandler
 
 class MappedList<P, T>(
     private val parent: ObservableReadOnlyList<P>,

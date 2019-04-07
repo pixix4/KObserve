@@ -2,8 +2,8 @@
 
 package de.westermann.kobserve
 
-import de.westermann.kobserve.basic.join
-import de.westermann.kobserve.basic.mapBinding
+import de.westermann.kobserve.property.join
+import de.westermann.kobserve.property.mapBinding
 import de.westermann.kobserve.list.ObservableReadOnlyList
 import kotlin.jvm.JvmName
 

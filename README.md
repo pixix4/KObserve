@@ -51,14 +51,14 @@ dependencies {
 ```kotlin
 val onRandomNumber = EventHandler<Int>()
 
-onRandomNumber {
-    println("The random number is $it!")
+onRandomNumber { number -> Int
+    println("The random number is $number!")
 }
 
 onRandomNumber.emit(5)
 ```
 
-For advanced usage you can obtain a event listener referencing object.
+For advanced usage you can obtain a event listener reference or combine event handlers.
 
 ```kotlin
 val addedReference = onRandomNumber.reference {
@@ -66,8 +66,14 @@ val addedReference = onRandomNumber.reference {
 }
 addedReference.remove()
 
-val lazyReference = ListenerReference(onRandomNumber) {
-    println("This listener has to be added manually.")
+val onFoo = EventHandler<Int>()
+val onBar = EventHandler<Double>()
+
+(onRandomNumber + onFoo) { number: Int ->
+    println("The int is $number!")
+}
+onFoo.and<Number>(onFoo) { number: Number ->
+    println("The number is $number!")
 }
 ```
 

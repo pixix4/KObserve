@@ -1,6 +1,10 @@
-package de.westermann.kobserve.basic
+package de.westermann.kobserve.property
 
-import de.westermann.kobserve.*
+import de.westermann.kobserve.Binding
+import de.westermann.kobserve.Property
+import de.westermann.kobserve.ValidationProperty
+import de.westermann.kobserve.event.EventHandler
+import de.westermann.kobserve.event.listenTo
 
 class SimpleValidationProperty<T>(
     private val property: Property<T>,
@@ -34,4 +38,5 @@ class SimpleValidationProperty<T>(
 /**
  * Apply an validation function to the given property.
  */
-fun <T> Property<T>.validate(validator: (T) -> Boolean): ValidationProperty<T> = SimpleValidationProperty(this, validator)
+fun <T> Property<T>.validate(validator: (T) -> Boolean): ValidationProperty<T> =
+    SimpleValidationProperty(this, validator)

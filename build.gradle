@@ -7,7 +7,7 @@ repositories {
     mavenCentral()
 }
 group 'de.westermann'
-version '0.8.3'
+version '0.9.0'
 
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
@@ -28,6 +28,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation 'org.jetbrains.kotlin:kotlin-stdlib-common'
+                implementation 'org.jetbrains.kotlin:kotlin-reflect'
             }
         }
         commonTest {

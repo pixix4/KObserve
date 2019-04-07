@@ -1,5 +1,6 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.event.EventHandler
 import kotlin.reflect.KProperty
 
 /**

@@ -1,4 +1,4 @@
-package de.westermann.kobserve.basic
+package de.westermann.kobserve.property
 
 import de.westermann.kobserve.Property
 import de.westermann.kobserve.ValidationProperty

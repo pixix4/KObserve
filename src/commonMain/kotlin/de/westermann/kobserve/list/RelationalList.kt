@@ -1,6 +1,6 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.event.EventHandler
 
 abstract class RelationalList<T>(
     protected val parent: ObservableReadOnlyList<T>

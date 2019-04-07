@@ -1,6 +1,6 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.basic.mapBinding
+import de.westermann.kobserve.property.mapBinding
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

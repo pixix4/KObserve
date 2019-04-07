@@ -1,8 +1,8 @@
-package de.westermann.kobserve.basic
+package de.westermann.kobserve.property
 
-import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.event.EventHandler
 import de.westermann.kobserve.ReadOnlyProperty
-import de.westermann.kobserve.listenTo
+import de.westermann.kobserve.event.listenTo
 
 open class FunctionReadOnlyProperty<T>(
     protected open val functionAccessor: FunctionReadOnlyAccessor<T>

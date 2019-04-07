@@ -1,5 +1,7 @@
 package de.westermann.kobserve
 
+import de.westermann.kobserve.event.EventListener
+
 /**
  * Represents the current binding state,
  */
@@ -31,13 +33,13 @@ sealed class Binding<T> {
     protected fun listen(
         source: ReadOnlyProperty<out T>,
         target: Property<T>
-    ): ListenerReference<Unit> =
+    ): EventListener<Unit> =
         source.onChange.reference {
             val newValue = source.value
             if (target.value != newValue) {
                 target.value = newValue
             }
-        }!!
+        }
 
     /**
      * Represents an unbound property state.
@@ -54,10 +56,10 @@ sealed class Binding<T> {
 
         override val isWritable: Boolean = false
 
-        private val targetReference: ListenerReference<Unit>
+        private val targetReference: EventListener<Unit>
 
         override fun unbind() {
-            targetReference.remove()
+            targetReference.detach()
         }
 
         override fun checkWrite(value: T) {
@@ -81,12 +83,12 @@ sealed class Binding<T> {
         override val isWritable: Boolean
             get() = target.isWritable
 
-        private val propertyReference: ListenerReference<Unit>
-        private val targetReference: ListenerReference<Unit>
+        private val propertyReference: EventListener<Unit>
+        private val targetReference: EventListener<Unit>
 
         override fun unbind() {
-            propertyReference.remove()
-            targetReference.remove()
+            propertyReference.detach()
+            targetReference.detach()
         }
 
         init {

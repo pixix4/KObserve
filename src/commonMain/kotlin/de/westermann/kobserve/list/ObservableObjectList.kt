@@ -1,6 +1,6 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.event.EventHandler
 
 class ObservableObjectList<T>(
     private val list: MutableList<T>

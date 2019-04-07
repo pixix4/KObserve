@@ -1,6 +1,6 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.EventHandler
+import de.westermann.kobserve.event.EventHandler
 import de.westermann.kobserve.ReadOnlyProperty
 
 interface ObservableReadOnlyList<T> : List<T>, ReadOnlyProperty<ObservableReadOnlyList<T>> {

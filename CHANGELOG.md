@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2019-04-07
+### Added
+- Add `EventBus`.
+- Add `GlobalEventBus` and accessor methods.
+
+### Changed
+- Move `EventHandler` to new package `event`.
+- Rename and refactor `ListenerReference` to `EventListener`.
+- `EventHandler.addListener()` and `EventHandler.reference()` never returns null.
+
 ## [0.8.3] - 2019-04-02
 ### Added
 - Add `flatten()` method.

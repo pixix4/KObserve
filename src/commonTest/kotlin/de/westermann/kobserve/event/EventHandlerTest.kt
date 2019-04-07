@@ -1,4 +1,4 @@
-package de.westermann.kobserve
+package de.westermann.kobserve.event
 
 import kotlin.test.*
 
@@ -35,9 +35,9 @@ class EventHandlerTest {
         val listener = handler.addListener {}
         assertNotNull(listener)
 
-        val nullListener = handler.addListener(listener)
-        assertNull(nullListener)
-        assertNull(handler.reference(listener))
+        val r1 = handler.reference(listener)
+        val r2 = handler.reference(listener)
+        assertEquals(r1, r2)
         assertEquals(1, handler.size, "Listener was not added!")
         assertFalse(handler.isEmpty(), "Listener was not added!")
     }
@@ -102,7 +102,7 @@ class EventHandlerTest {
         val reference = handler.reference { }
 
         assertNotNull(reference)
-        assertTrue(reference.isAdded)
+        assertTrue(reference.isAttached)
     }
 
     @Test
@@ -123,8 +123,6 @@ class EventHandlerTest {
         assertEquals(5, listener1Count)
         assertEquals(5, listener2Count)
         assertEquals(5, listener3Count)
-
-        assertTrue(handler.containsAll(listOf(listener1, listener2, listener3)))
 
         var elementsInIterator = 0
         for (listener in handler) {
@@ -148,5 +146,27 @@ class EventHandlerTest {
 
         assertEquals(1, handlerCount)
         assertEquals(2, secondCount)
+    }
+
+    @Test
+    fun combineTest() {
+        val second = EventHandler<Double>()
+
+        var sum = 0.0
+        var count = 0
+        (second.and<Number>(handler)) {}
+        second.and<Number>(handler) {
+            sum += it.toDouble()
+        }
+
+        (handler + second) {
+            count++
+        }
+
+        handler.emit(1)
+        second.emit(2.0)
+
+        assertEquals(2, count)
+        assertEquals(3.0, sum)
     }
 }

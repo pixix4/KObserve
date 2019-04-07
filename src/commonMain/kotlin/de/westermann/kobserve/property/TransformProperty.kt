@@ -1,7 +1,6 @@
-package de.westermann.kobserve.basic
+package de.westermann.kobserve.property
 
-import de.westermann.kobserve.EventHandler
-import de.westermann.kobserve.ListenerReference
+import de.westermann.kobserve.event.EventHandler
 import de.westermann.kobserve.ReadOnlyProperty
 
 class TransformProperty<R, T>(

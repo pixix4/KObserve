@@ -1,7 +1,7 @@
-package de.westermann.kobserve.basic
+package de.westermann.kobserve.property
 
-import de.westermann.kobserve.EventHandler
-import de.westermann.kobserve.ListenerReference
+import de.westermann.kobserve.event.EventHandler
+import de.westermann.kobserve.event.EventListener
 import de.westermann.kobserve.ReadOnlyProperty
 import kotlin.reflect.KProperty1
 
@@ -16,16 +16,16 @@ open class FlatReceiverReadOnlyProperty<R, T>(
 
     final override val onChange = EventHandler<Unit>()
 
-    private lateinit var reference: ListenerReference<Unit>
+    private lateinit var reference: EventListener<Unit>
 
     private fun updateReference() {
-        if (this::reference.isInitialized && reference.isAdded) {
-            reference.remove()
+        if (this::reference.isInitialized && reference.isAttached) {
+            reference.detach()
         }
 
-        attribute.get(receiver.value).onChange.reference {
+        reference = attribute.get(receiver.value).onChange.reference {
             onChange.emit(Unit)
-        }?.let { reference = it }
+        }
     }
 
     init {

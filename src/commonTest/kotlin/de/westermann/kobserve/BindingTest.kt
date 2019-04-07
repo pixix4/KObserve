@@ -1,6 +1,6 @@
 package de.westermann.kobserve
 
-import de.westermann.kobserve.basic.property
+import de.westermann.kobserve.property.property
 import kotlin.test.*
 
 class BindingTest {

@@ -1,6 +1,5 @@
-package de.westermann.kobserve.basic
+package de.westermann.kobserve.property
 
-import de.westermann.kobserve.basic.observe
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
