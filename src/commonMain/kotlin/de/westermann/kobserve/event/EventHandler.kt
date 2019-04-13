@@ -123,7 +123,7 @@ class EventHandler<E>() {
         }
     }
 
-    inner class Listener(
+    private inner class Listener(
         private val listener: (E) -> Unit
     ) : EventListener<E> {
 

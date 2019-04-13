@@ -1,16 +1,16 @@
 plugins {
-    id 'kotlin-multiplatform' version '1.3.21'
+    id 'kotlin-multiplatform' version '1.3.30'
     id "com.jfrog.bintray" version "1.8.4"
+    id 'maven-publish'
+    id 'jacoco'
 }
 
 repositories {
     mavenCentral()
 }
-group 'de.westermann'
-version '0.9.0'
 
-apply plugin: 'maven-publish'
-apply plugin: 'jacoco'
+group 'de.westermann'
+version '0.9.1'
 
 kotlin {
     jvm()
@@ -66,16 +66,18 @@ jacoco {
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: jvmTest) {
-    additionalSourceDirs = files("$projectDir/src/commonMain/kotlin")
-    additionalClassDirs = files("$buildDir/classes/kotlin/jvm/main")
+    getAdditionalSourceDirs().from(files("$projectDir/src/commonMain/kotlin"))
+    getAdditionalClassDirs().from(files("$buildDir/classes/kotlin/jvm/main"))
     reports {
-        xml.enabled true
+        xml.enabled = true
     }
-    executionData = files("$buildDir/jacoco/jvmTest.exec")
+    getExecutionData().from(files("$buildDir/jacoco/jvmTest.exec"))
     afterEvaluate {
-        additionalClassDirs = files(additionalClassDirs.files.collect {
-            fileTree(dir: it, exclude: 'de/westermann/kobserve/Extensions*')
-        })
+        getAdditionalSourceDirs().from(
+                files(additionalClassDirs.files.collect {
+                    fileTree(dir: it, exclude: 'de/westermann/kobserve/Extensions*')
+                })
+        )
     }
 }
 
@@ -195,7 +197,7 @@ bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
 
-    publications = ['jvm','js','metadata', 'kotlinMultiplatform']
+    publications = ['jvm', 'js', 'metadata', 'kotlinMultiplatform']
 
     publish = true
 
@@ -207,7 +209,7 @@ bintray {
 
         version {
             name = project.version
-            released  = new Date()
+            released = new Date()
         }
     }
 }
