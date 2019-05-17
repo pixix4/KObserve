@@ -6,16 +6,60 @@ abstract class RelationalList<T>(
     protected val parent: ObservableReadOnlyList<T>
 ) : ObservableReadOnlyList<T> {
 
-    override val onAdd = EventHandler<Int>()
-    override val onUpdate = EventHandler<Int>()
-    override val onRemove = EventHandler<Int>()
+    override val onAdd = EventHandler<ListAddEvent<T>>()
+    override val onUpdate = EventHandler<ListUpdateEvent<T>>()
+    override val onRemove = EventHandler<ListRemoveEvent>()
+
     override val onChange = EventHandler<Unit>()
 
     protected val relation: MutableList<Int> = mutableListOf()
+
     abstract fun updateRelation()
 
+    override fun invalidate() {
+        val oldRelation = relation.toMutableList()
+
+        updateRelation()
+
+        val newRelation = relation.toList()
+
+        val hasListChanged = oldRelation != newRelation
+
+        while (true) {
+            val firstToRemove = oldRelation.indexOfFirst { it !in newRelation }
+
+            if (firstToRemove >= 0) {
+                onRemove.emit(ListRemoveEvent(firstToRemove))
+                oldRelation.removeAt(firstToRemove)
+                continue
+            }
+
+            break
+        }
+
+        for ((newIndex, value) in newRelation.withIndex()) {
+            val oldIndex = oldRelation.indexOf(value)
+
+            if (oldIndex == newIndex) {
+                continue
+            }
+
+            if (oldIndex < 0) {
+                onAdd.emit(ListAddEvent(newIndex, get(newIndex)))
+            } else {
+                onUpdate.emit(ListUpdateEvent(oldIndex, newIndex, get(newIndex)))
+                oldRelation.removeAt(oldIndex)
+            }
+            oldRelation.add(newIndex, value)
+        }
+
+        if (hasListChanged) {
+            onChange.emit(Unit)
+        }
+    }
+
     override val size: Int
-            get() = relation.size
+        get() = relation.size
 
     override fun contains(element: T): Boolean {
         for (elem in iterator()) {
@@ -77,29 +121,16 @@ abstract class RelationalList<T>(
     }
 
     init {
-        parent.onAdd { oldIndex ->
-            updateRelation()
-            val index = relation.indexOf(oldIndex)
-            if (index >= 0) {
-                onAdd.emit(index)
-                onChange.emit(Unit)
-            }
+        parent.onAdd {
+            invalidate()
         }
-        parent.onUpdate { oldIndex ->
-            updateRelation()
-            val index = relation.indexOf(oldIndex)
-            if (index >= 0) {
-                onUpdate.emit(index)
-                onChange.emit(Unit)
-            }
+        parent.onUpdate {
+            invalidate()
         }
-        parent.onRemove { oldIndex ->
-            val index = relation.indexOf(oldIndex)
-            updateRelation()
-            if (index >= 0) {
-                onRemove.emit(index)
-                onChange.emit(Unit)
-            }
+        parent.onRemove {
+            invalidate()
         }
     }
+
+    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
 }

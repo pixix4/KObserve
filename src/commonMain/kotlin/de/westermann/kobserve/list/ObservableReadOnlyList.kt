@@ -1,20 +1,20 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.event.EventHandler
 import de.westermann.kobserve.ReadOnlyProperty
+import de.westermann.kobserve.event.EventHandler
 
 interface ObservableReadOnlyList<T> : List<T>, ReadOnlyProperty<ObservableReadOnlyList<T>> {
-    val onAdd: EventHandler<Int>
-    val onUpdate: EventHandler<Int>
-    val onRemove: EventHandler<Int>
+    val onAdd: EventHandler<ListAddEvent<T>>
+    val onUpdate: EventHandler<ListUpdateEvent<T>>
+    val onRemove: EventHandler<ListRemoveEvent>
 
     fun notifyItemChanged(index: Int) {
-        onUpdate.emit(index)
+        onUpdate.emit(ListUpdateEvent(index, index, get(index)))
     }
 
     fun notifyDatasetChanged() {
-        for (i in indices) {
-            onUpdate.emit(i)
+        for ((i,e) in withIndex()) {
+            onUpdate.emit(ListUpdateEvent(i, i, e))
         }
     }
 
@@ -38,3 +38,18 @@ interface ObservableReadOnlyList<T> : List<T>, ReadOnlyProperty<ObservableReadOn
         return this
     }
 }
+
+data class ListAddEvent<T>(
+    val index: Int,
+    val element: T
+)
+
+data class ListUpdateEvent<T>(
+    val oldIndex: Int,
+    val newIndex: Int,
+    val element: T
+)
+
+data class ListRemoveEvent(
+    val index: Int
+)

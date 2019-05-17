@@ -8,34 +8,35 @@ open class ObservableReadOnlySubList<T>(
 ) : ObservableReadOnlyList<T> {
 
     protected open val parent: ObservableReadOnlyList<T> = parent.also {
-        it.onAdd { parentIndex ->
+        it.onAdd { (parentIndex, element) ->
             val index = parentIndex - range.first
 
             if (index in 0 until size) {
-                onAdd.emit(index)
+                onAdd.emit(ListAddEvent(index, element))
             }
         }
 
-        it.onUpdate { parentIndex ->
-            val index = parentIndex - range.first
+        it.onUpdate { (parentOldIndex, parentNewIndex, element) ->
+            val oldIndex = parentOldIndex - range.first
+            val newIndex = parentNewIndex - range.first
 
-            if (index in 0 until size) {
-                onUpdate.emit(index)
+            if (oldIndex in 0 until size || newIndex in 0 until size) {
+                onUpdate.emit(ListUpdateEvent(oldIndex, newIndex, element))
             }
         }
 
-        it.onRemove { parentIndex ->
+        it.onRemove { (parentIndex) ->
             val index = parentIndex - range.first
 
             if (index in 0 until size) {
-                onRemove.emit(index)
+                onRemove.emit(ListRemoveEvent(index))
             }
         }
     }
 
-    override val onAdd = EventHandler<Int>()
-    override val onUpdate = EventHandler<Int>()
-    override val onRemove = EventHandler<Int>()
+    override val onAdd = EventHandler<ListAddEvent<T>>()
+    override val onUpdate = EventHandler<ListUpdateEvent<T>>()
+    override val onRemove = EventHandler<ListRemoveEvent>()
     override val onChange = EventHandler<Unit>()
 
     override val size: Int
@@ -90,4 +91,5 @@ open class ObservableReadOnlySubList<T>(
         return result
     }
 
+    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
 }

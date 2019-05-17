@@ -94,4 +94,6 @@ class ObservableSubList<T>(
         result = 31 * result + parent.hashCode()
         return result
     }
+
+    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
 }

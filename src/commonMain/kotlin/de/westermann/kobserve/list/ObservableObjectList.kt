@@ -6,24 +6,24 @@ class ObservableObjectList<T>(
     private val list: MutableList<T>
 ) : ObservableList<T> {
 
-    override val onAdd = EventHandler<Int>()
-    override val onUpdate = EventHandler<Int>()
-    override val onRemove = EventHandler<Int>()
+    override val onAdd = EventHandler<ListAddEvent<T>>()
+    override val onUpdate = EventHandler<ListUpdateEvent<T>>()
+    override val onRemove = EventHandler<ListRemoveEvent>()
 
     override val onChange = EventHandler<Unit>()
 
-    private fun emitOnAdd(index: Int) {
-        onAdd.emit(index)
+    private fun emitOnAdd(index: Int, element: T) {
+        onAdd.emit(ListAddEvent(index, element))
         onChange.emit(Unit)
     }
 
-    private fun emitOnUpdate(index: Int) {
-        onUpdate.emit(index)
+    private fun emitOnUpdate(oldIndex: Int, newIndex: Int, element: T) {
+        onUpdate.emit(ListUpdateEvent(oldIndex, newIndex, element))
         onChange.emit(Unit)
     }
 
     private fun emitOnRemove(index: Int) {
-        onRemove.emit(index)
+        onRemove.emit(ListRemoveEvent(index))
         onChange.emit(Unit)
     }
 
@@ -33,21 +33,21 @@ class ObservableObjectList<T>(
     override fun add(element: T): Boolean {
         val isAdded = list.add(element)
         if (isAdded) {
-            emitOnAdd(size - 1)
+            emitOnAdd(size - 1, element)
         }
         return isAdded
     }
 
     override fun add(index: Int, element: T) {
         list.add(index, element)
-        emitOnAdd(index)
+        emitOnAdd(index, element)
     }
 
     override fun addAll(index: Int, elements: Collection<T>): Boolean {
         val isAdded = list.addAll(index, elements)
         if (isAdded) {
             for (i in index until index + elements.size) {
-                emitOnAdd(i)
+                emitOnAdd(i, list[i])
             }
         }
         return isAdded
@@ -57,7 +57,7 @@ class ObservableObjectList<T>(
         val isAdded = list.addAll(elements)
         if (isAdded) {
             for (i in size - elements.size until size) {
-                emitOnAdd(i)
+                emitOnAdd(i, list[i])
             }
         }
         return isAdded
@@ -154,12 +154,8 @@ class ObservableObjectList<T>(
         return s
     }
 
-    override fun toString(): String {
-        return list.toString()
-    }
-
     override fun notifyItemChanged(index: Int) {
-        emitOnUpdate(index)
+        emitOnUpdate(index,index,  get(index))
     }
 
     override fun equals(other: Any?): Boolean {
@@ -176,9 +172,11 @@ class ObservableObjectList<T>(
     override fun hashCode(): Int {
         return list.hashCode()
     }
+
+    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
 }
 
 fun <T> listProperty(list: MutableList<T>): ObservableList<T> = ObservableObjectList(list)
-fun <T> MutableList<T>.observe(): ObservableList<T> = ObservableObjectList(this)
+fun <T> MutableList<T>.asObservable(): ObservableList<T> = ObservableObjectList(this)
 fun <T> observableListOf(vararg elements: T): ObservableList<T> =
     ObservableObjectList(mutableListOf(*elements))

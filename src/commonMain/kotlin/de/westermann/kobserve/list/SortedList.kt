@@ -1,18 +1,15 @@
 package de.westermann.kobserve.list
 
+import de.westermann.kobserve.ReadOnlyProperty
+import de.westermann.kobserve.property.property
+
 class SortedList<T>(
     parent: ObservableReadOnlyList<T>,
     comparator: Comparator<T>
 ) : RelationalList<T>(parent) {
 
-    var comparator: Comparator<T> = comparator
-        set(value) {
-            if (value != field) {
-                field = value
-                updateRelation()
-                onChange.emit(Unit)
-            }
-        }
+    val comparatorProperty = property(comparator)
+    var comparator by comparatorProperty
 
     override fun updateRelation() {
         if (parent.size != relation.size) {
@@ -77,8 +74,18 @@ class SortedList<T>(
     }
 
     init {
-        updateRelation()
+        invalidate()
+
+        comparatorProperty.onChange {
+            invalidate()
+        }
     }
 }
 
-fun <T> ObservableReadOnlyList<T>.sortObservable(comparator: Comparator<T>): ObservableReadOnlyList<T> = SortedList(this, comparator)
+fun <T> ObservableReadOnlyList<T>.sortObservable(comparator: Comparator<T>): SortedList<T> =
+    SortedList(this, comparator)
+
+fun <T> ObservableReadOnlyList<T>.sortObservable(comparatorProperty: ReadOnlyProperty<Comparator<T>>): SortedList<T> =
+    SortedList(this, comparatorProperty.value).also {
+        it.comparatorProperty.bind(comparatorProperty)
+    }

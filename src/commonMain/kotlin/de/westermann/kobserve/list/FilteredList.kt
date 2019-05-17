@@ -1,18 +1,15 @@
 package de.westermann.kobserve.list
 
+import de.westermann.kobserve.ReadOnlyProperty
+import de.westermann.kobserve.property.property
+
 class FilteredList<T>(
     parent: ObservableReadOnlyList<T>,
     predicate: (T) -> Boolean
 ) : RelationalList<T>(parent) {
 
-    var predicate: (T) -> Boolean = predicate
-        set(value) {
-            if (value != field) {
-                field = value
-                updateRelation()
-                onChange.emit(Unit)
-            }
-        }
+    val predicateProperty = property(predicate)
+    var predicate by predicateProperty
 
     override fun updateRelation() {
         relation.clear()
@@ -42,9 +39,26 @@ class FilteredList<T>(
     }
 
     init {
-        updateRelation()
+        invalidate()
+
+        predicateProperty.onChange {
+            invalidate()
+        }
     }
 }
 
-fun <T> ObservableReadOnlyList<T>.filterObservable(predicate: (T) -> Boolean): ObservableReadOnlyList<T> =
+fun <T> ObservableReadOnlyList<T>.filterObservable(predicate: (T) -> Boolean): FilteredList<T> =
     FilteredList(this, predicate)
+
+fun <T> ObservableReadOnlyList<T>.filterObservable(predicateProperty: ReadOnlyProperty<(T) -> Boolean>): FilteredList<T> =
+    FilteredList(this, predicateProperty.value).also {
+        it.predicateProperty.bind(predicateProperty)
+    }
+
+fun <T, F> ObservableReadOnlyList<T>.filterObservable(
+    filterProperty: ReadOnlyProperty<F>,
+    predicate: (element: T, filter: F) -> Boolean
+): FilteredList<T> = FilteredList(this) { predicate(it, filterProperty.value) }.also { list ->
+    filterProperty.onChange { list.invalidate() }
+}
+

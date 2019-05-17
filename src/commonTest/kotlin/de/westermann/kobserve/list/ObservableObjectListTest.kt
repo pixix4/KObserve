@@ -16,7 +16,7 @@ class ObservableObjectListTest {
         val list = listOf(1, 2, 3, 2, 4)
 
         mutableList = list.toMutableList()
-        observableObjectList = list.toMutableList().observe()
+        observableObjectList = list.toMutableList().asObservable()
     }
 
     @Test
@@ -37,7 +37,7 @@ class ObservableObjectListTest {
     fun addTest() {
         var index = -1
         observableObjectList.onAdd {
-            index = it
+            index = it.index
         }
 
         mutableList.add(6)
@@ -51,7 +51,7 @@ class ObservableObjectListTest {
     fun addIndexTest() {
         var index = -1
         observableObjectList.onAdd {
-            index = it
+            index = it.index
         }
 
         mutableList.add(2, 6)
@@ -65,7 +65,7 @@ class ObservableObjectListTest {
     fun addAllTest() {
         var index = emptySet<Int>()
         observableObjectList.onAdd {
-            index += it
+            index += it.index
         }
 
         mutableList.addAll(listOf(6, 7))
@@ -79,7 +79,7 @@ class ObservableObjectListTest {
     fun addAllIndexTest() {
         var index = emptySet<Int>()
         observableObjectList.onAdd {
-            index += it
+            index += it.index
         }
 
         mutableList.addAll(2, listOf(6, 7))
@@ -93,7 +93,7 @@ class ObservableObjectListTest {
     fun clearTest() {
         var index = emptySet<Int>()
         observableObjectList.onRemove {
-            index += it
+            index += it.index
         }
 
         mutableList.clear()
@@ -109,7 +109,7 @@ class ObservableObjectListTest {
         val targetIndex = mutableList.indexOf(2)
         var index = -1
         observableObjectList.onRemove {
-            index = it
+            index = it.index
         }
 
         mutableList.remove(2)
@@ -123,7 +123,7 @@ class ObservableObjectListTest {
     fun removeAllTest() {
         var removed = emptySet<Int>()
         observableObjectList.onRemove {
-            removed += it
+            removed += it.index
         }
 
         mutableList.removeAll(listOf(1, 2))
@@ -137,7 +137,7 @@ class ObservableObjectListTest {
     fun removeAtTest() {
         var index = -1
         observableObjectList.onRemove {
-            index = it
+            index = it.index
         }
 
         mutableList.removeAt(2)
@@ -151,7 +151,7 @@ class ObservableObjectListTest {
     fun retainAllTest() {
         var removed = emptySet<Int>()
         observableObjectList.onRemove {
-            removed += it
+            removed += it.index
         }
 
         mutableList.retainAll(listOf(1, 2))
@@ -173,11 +173,11 @@ class ObservableObjectListTest {
 
         observableObjectList.onUpdate {
             observeCall += 1
-            observeItem = it
+            observeItem = it.newIndex
         }
         subList.onUpdate {
             subCall += 1
-            subItem = it
+            subItem = it.newIndex
         }
 
         observableObjectList[2] = 5
@@ -202,11 +202,11 @@ class ObservableObjectListTest {
 
         observableObjectList.onUpdate {
             observeCall += 1
-            observeItem = it
+            observeItem = it.newIndex
         }
         subList.onUpdate {
             subCall += 1
-            subItem = it
+            subItem = it.newIndex
         }
 
         subList[1] = 5
