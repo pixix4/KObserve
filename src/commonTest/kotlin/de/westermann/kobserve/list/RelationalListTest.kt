@@ -132,4 +132,119 @@ class RelationalListTest {
             final
         )
     }
+
+    @Test
+    fun testEmptyFilterSortList() {
+        val names = listOf(
+            "Benno" to 5,
+            "Leon" to 2,
+            "Lars" to 10,
+            "Puis" to 200,
+            "Amy" to 8,
+            "Jakob" to 1337
+        )
+
+        val observable = observableListOf<Pair<String, Int>>()
+
+        val comparatorProperty = property(compareBy<Pair<String, Int>> { it.first })
+        val searchProperty = property("")
+
+        val final = observable.filterObservable(searchProperty) { element, filter ->
+            filter.toLowerCase() in element.first.toLowerCase()
+        }.sortObservable(comparatorProperty)
+
+        assertEquals(
+            emptyList<Pair<String, Int>>(),
+            final
+        )
+
+        val trackUnfiltered = mutableListOf<Pair<String, Int>>()
+        observable.onAdd {
+            trackUnfiltered.add(it.index, it.element)
+        }
+        observable.onUpdate {
+            trackUnfiltered.removeAt(it.oldIndex)
+            trackUnfiltered.add(it.newIndex, it.element)
+        }
+        observable.onRemove {
+            trackUnfiltered.removeAt(it.index)
+        }
+
+        val trackFiltered = mutableListOf<Pair<String, Int>>()
+        final.onAdd {
+            trackFiltered.add(it.index, it.element)
+        }
+        final.onUpdate {
+            trackFiltered.removeAt(it.oldIndex)
+            trackFiltered.add(it.newIndex, it.element)
+        }
+        final.onRemove {
+            trackFiltered.removeAt(it.index)
+        }
+
+        for (name in names) {
+            observable.add(name)
+
+            assertEquals(trackUnfiltered, observable)
+            assertEquals<List<Pair<String, Int>>>(trackFiltered, final)
+        }
+    }
+
+    @Test
+    fun testEmptySortFilterList() {
+        val names = listOf(
+            "Benno" to 5,
+            "Leon" to 2,
+            "Lars" to 10,
+            "Puis" to 200,
+            "Amy" to 8,
+            "Jakob" to 1337
+        )
+
+        val observable = observableListOf<Pair<String, Int>>()
+
+        val comparatorProperty = property(compareBy<Pair<String, Int>> { it.first })
+        val searchProperty = property("")
+
+        val final = observable.sortObservable(comparatorProperty)
+            .filterObservable(searchProperty) { element, filter ->
+                filter.toLowerCase() in element.first.toLowerCase()
+            }
+
+        assertEquals(
+            emptyList<Pair<String, Int>>(),
+            final
+        )
+
+        val trackUnfiltered = mutableListOf<Pair<String, Int>>()
+        observable.onAdd {
+            trackUnfiltered.add(it.index, it.element)
+        }
+        observable.onUpdate {
+            trackUnfiltered.removeAt(it.oldIndex)
+            trackUnfiltered.add(it.newIndex, it.element)
+        }
+        observable.onRemove {
+            trackUnfiltered.removeAt(it.index)
+        }
+
+        val trackFiltered = mutableListOf<Pair<String, Int>>()
+        final.onAdd {
+            trackFiltered.add(it.index, it.element)
+        }
+        final.onUpdate {
+            trackFiltered.removeAt(it.oldIndex)
+            trackFiltered.add(it.newIndex, it.element)
+        }
+        final.onRemove {
+            trackFiltered.removeAt(it.index)
+        }
+
+        for (name in names) {
+            observable.add(name)
+
+            assertEquals(trackUnfiltered, observable)
+            assertEquals<List<Pair<String, Int>>>(trackFiltered, final)
+        }
+    }
 }

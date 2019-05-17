@@ -173,7 +173,7 @@ class ObservableObjectList<T>(
         return list.hashCode()
     }
 
-    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
+    override fun toString(): String = joinToString(", ", "[", "]")
 }
 
 fun <T> listProperty(list: MutableList<T>): ObservableList<T> = ObservableObjectList(list)

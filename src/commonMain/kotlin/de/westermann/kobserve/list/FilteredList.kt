@@ -14,8 +14,9 @@ class FilteredList<T>(
     override fun updateRelation() {
         relation.clear()
         for (index in 0 until parent.size) {
+            val element = parent[index]
             if (predicate(parent[index])) {
-                relation += index
+                relation += Relation(index, element.hashCode())
             }
         }
     }

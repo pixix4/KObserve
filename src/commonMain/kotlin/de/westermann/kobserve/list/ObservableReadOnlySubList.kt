@@ -91,5 +91,5 @@ open class ObservableReadOnlySubList<T>(
         return result
     }
 
-    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
+    override fun toString(): String = joinToString(", ", "[", "]")
 }

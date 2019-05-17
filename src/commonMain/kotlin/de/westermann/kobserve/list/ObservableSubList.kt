@@ -95,5 +95,5 @@ class ObservableSubList<T>(
         return result
     }
 
-    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
+    override fun toString(): String =joinToString(", ", "[", "]")
 }

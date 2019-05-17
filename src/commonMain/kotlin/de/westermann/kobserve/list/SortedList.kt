@@ -14,15 +14,15 @@ class SortedList<T>(
     override fun updateRelation() {
         if (parent.size != relation.size) {
             relation.clear()
-            relation.addAll(0 until parent.size)
+            relation.addAll((0 until parent.size).map { Relation(it, parent[it].hashCode()) })
         }
 
         sortSection(relation.toMutableList(), relation, 0, relation.size)
     }
 
     private fun mergeHalves(
-        workA: MutableList<Int>,
-        workB: MutableList<Int>,
+        workA: MutableList<Relation>,
+        workB: MutableList<Relation>,
         start: Int,
         mid: Int,
         exclusiveEnd: Int
@@ -30,7 +30,7 @@ class SortedList<T>(
         var p1 = start
         var p2 = mid
         for (i in start until exclusiveEnd) {
-            if (p1 < mid && (p2 == exclusiveEnd || comparator.compare(parent[workA[p1]], parent[workA[p2]]) <= 0)) {
+            if (p1 < mid && (p2 == exclusiveEnd || comparator.compare(parent[workA[p1].index], parent[workA[p2].index]) <= 0)) {
                 workB[i] = workA[p1]
                 p1++
             } else {
@@ -41,8 +41,8 @@ class SortedList<T>(
     }
 
     private fun sortSection(
-        input: MutableList<Int>,
-        output: MutableList<Int>,
+        input: MutableList<Relation>,
+        output: MutableList<Relation>,
         start: Int,
         exclusiveEnd: Int
     ) {

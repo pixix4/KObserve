@@ -12,7 +12,7 @@ abstract class RelationalList<T>(
 
     override val onChange = EventHandler<Unit>()
 
-    protected val relation: MutableList<Int> = mutableListOf()
+    protected val relation: MutableList<Relation> = mutableListOf()
 
     abstract fun updateRelation()
 
@@ -84,7 +84,7 @@ abstract class RelationalList<T>(
     }
 
     override fun get(index: Int): T {
-        return parent[relation[index]]
+        return parent[relation[index].index]
     }
 
     override fun indexOf(element: T): Int {
@@ -132,5 +132,7 @@ abstract class RelationalList<T>(
         }
     }
 
-    override fun toString(): String = joinToString(prefix = "[", postfix = "]") { ", " }
+    override fun toString(): String = joinToString(", ", "[", "]")
+
+    data class Relation(val index: Int, val hash: Int)
 }
