@@ -39,49 +39,49 @@ class ObservableMutableIterator<T>(
 
 open class ObservableListIterator<T>(
     private val list: List<T>,
-    protected var nextIndex: Int = 0
+    protected var nextIndexValue: Int = 0
 ) : ListIterator<T> {
 
     protected var lastIndex = -1
 
-    override fun hasNext(): Boolean = nextIndex < list.size
+    override fun hasNext(): Boolean = nextIndexValue < list.size
 
     override fun next(): T {
         if (!hasNext()) throw NoSuchElementException()
-        lastIndex = nextIndex++
+        lastIndex = nextIndexValue++
         return list[lastIndex]
     }
 
-    override fun hasPrevious(): Boolean = nextIndex > 0
+    override fun hasPrevious(): Boolean = nextIndexValue > 0
 
-    override fun nextIndex(): Int = nextIndex
+    override fun nextIndex(): Int = nextIndexValue
 
     override fun previous(): T {
         if (!hasPrevious()) throw NoSuchElementException()
 
-        lastIndex = --nextIndex
+        lastIndex = --nextIndexValue
         return list[lastIndex]
     }
 
-    override fun previousIndex(): Int = nextIndex - 1
+    override fun previousIndex(): Int = nextIndexValue - 1
 }
 
 class ObservableMutableListIterator<T>(
     private val list: ObservableMutableList<T>,
-    nextIndex: Int = 0
-) : ObservableListIterator<T>(list, nextIndex), MutableListIterator<T> {
+    nextIndexValue: Int = 0
+) : ObservableListIterator<T>(list, nextIndexValue), MutableListIterator<T> {
 
     override fun remove() {
         check(lastIndex != -1) { "Call next() or previous() before removing element from the iterator." }
 
         list.removeAt(lastIndex)
-        nextIndex = lastIndex
+        nextIndexValue = lastIndex
         lastIndex = -1
     }
 
     override fun add(element: T) {
-        list.add(nextIndex, element)
-        nextIndex++
+        list.add(nextIndexValue, element)
+        nextIndexValue++
         lastIndex = -1
     }
 
