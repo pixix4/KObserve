@@ -118,8 +118,10 @@ class EventHandler<E>() {
     var onDetach: () -> Unit = {}
 
     constructor(vararg dependencies: EventHandler<out E>) : this() {
-        dependencies.forEach {
-            it.addListener(this::emit)
+        dependencies.forEach { eventHandler ->
+            eventHandler.addListener { event ->
+                emit(event)
+            }
         }
     }
 
@@ -176,7 +178,7 @@ class EventHandler<E>() {
  */
 fun EventHandler<Unit>.listenTo(handler: EventHandler<*>) {
     handler {
-        emit(Unit)
+        emit()
     }
 }
 
@@ -197,3 +199,8 @@ fun <T> EventHandler<out T>.and(other: EventHandler<out T>, listener: (T) -> Uni
  */
 operator fun <T> EventHandler<out T>.plus(other: EventHandler<out T>): EventHandler<T> =
     EventHandler(this, other)
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun EventHandler<Unit>.emit() {
+    emit(Unit)
+}

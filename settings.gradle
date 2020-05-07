@@ -8,6 +8,3 @@ pluginManagement {
     }
 }
 rootProject.name = 'KObserve'
-
-
-enableFeaturePreview('GRADLE_METADATA')
