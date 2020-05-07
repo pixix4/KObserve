@@ -1,7 +1,6 @@
 package de.westermann.kobserve.map
 
 import de.westermann.kobserve.base.ObservableMap
-import de.westermann.kobserve.base.ObservableSet
 import de.westermann.kobserve.set.ReconstructionSet
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

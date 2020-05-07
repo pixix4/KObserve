@@ -3,10 +3,12 @@ plugins {
     id "com.jfrog.bintray" version "1.8.4"
     id 'maven-publish'
     id 'jacoco'
+    id 'org.jetbrains.dokka' version '0.10.1'
 }
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 group 'de.westermann'
@@ -57,6 +59,39 @@ kotlin {
                 implementation 'org.jetbrains.kotlin:kotlin-test-js'
             }
         }
+    }
+}
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/dokka"
+
+    multiplatform {
+        global {
+            // perPackageOptions, sourceLinks and externalDocumentationLinks from here will be copied to every other platform (jvm and js in eg.)
+            // perPackageOption {
+            //     prefix = "de.westermann.kobserve"
+            //     suppress = true
+            // }
+            // perPackageOption {
+            //     prefix = "kotlin.internal"
+            //     suppress = true
+            // }
+            perPackageOption {
+                prefix = "de.westermann.kobserve"
+                skipDeprecated = false
+                reportUndocumented = true
+                includeNonPublic = false
+            }
+            sourceLink {
+                path = "src/commonMain/kotlin"
+                url = "https://github.com/pixix4/KObserve/tree/master/src/commonMain/kotlin"
+                lineSuffix = "#L"
+            }
+        }
+        common {}
+        jvm {}
+        js {}
     }
 }
 

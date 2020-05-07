@@ -1,7 +1,6 @@
 package de.westermann.kobserve.list
 
 import de.westermann.kobserve.base.ObservableMutableList
-import de.westermann.kobserve.base.ObservableMutableSet
 import kotlin.test.*
 
 class SimpleObservableMutableListTest {
@@ -53,7 +52,7 @@ class SimpleObservableMutableListTest {
         assertEquals(2, observableList.lastIndexOf(3))
         assertEquals(-1, observableList.lastIndexOf(8))
     }
-    
+
     @Test
     fun isEmptyTest() {
         assertFalse(observableList.isEmpty())
@@ -201,7 +200,7 @@ class SimpleObservableMutableListTest {
 
         assertEquals<List<Int>>(listOf(4, 5), observableList)
     }
-    
+
     @Test
     fun setTest() {
         assertEquals(3, observableList.set(2, 5))

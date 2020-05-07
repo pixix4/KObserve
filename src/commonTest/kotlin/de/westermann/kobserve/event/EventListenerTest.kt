@@ -1,7 +1,5 @@
 package de.westermann.kobserve.event
 
-import de.westermann.kobserve.event.EventHandler
-import de.westermann.kobserve.event.EventListener
 import kotlin.test.*
 
 class EventListenerTest {

@@ -1,6 +1,7 @@
 package de.westermann.kobserve.base
 
 import de.westermann.kobserve.event.EventHandler
+import kotlin.reflect.KProperty
 
 interface ObservableMap<K, V> : ObservableValue<Map<K, V>>, Map<K, V> {
 
@@ -14,7 +15,7 @@ interface ObservableMap<K, V> : ObservableValue<Map<K, V>>, Map<K, V> {
     override val keys: ObservableSet<K>
 
     override val values: ObservableCollection<V>
-    
+
     override fun get(): Map<K, V> {
         return this
     }
@@ -34,4 +35,17 @@ interface ObservableMap<K, V> : ObservableValue<Map<K, V>>, Map<K, V> {
         val key: K,
         val value: V
     )
+
+    override val size: Int
+    override fun isEmpty(): Boolean
+    override fun containsKey(key: K): Boolean
+    override fun containsValue(value: V): Boolean
+    override fun get(key: K): V?
+
+    override val value: Map<K, V>
+        get() = get()
+
+    override fun getValue(container: Any?, property: KProperty<*>): Map<K, V> = get()
+    override val onChange: EventHandler<Unit>
+    override fun invalidate() {}
 }

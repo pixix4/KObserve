@@ -1,8 +1,6 @@
 package de.westermann.kobserve.list
 
-import de.westermann.kobserve.base.ObservableList
 import de.westermann.kobserve.base.ObservableMutableList
-import de.westermann.kobserve.property.property
 import kotlin.test.*
 
 class ObservableMutableSubListTest {

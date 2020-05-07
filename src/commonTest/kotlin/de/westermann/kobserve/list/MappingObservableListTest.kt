@@ -2,9 +2,7 @@ package de.westermann.kobserve.list
 
 import de.westermann.kobserve.base.ObservableList
 import de.westermann.kobserve.base.ObservableMutableList
-import de.westermann.kobserve.base.ObservableMutableSet
 import de.westermann.kobserve.property.property
-import de.westermann.kobserve.set.mapObservable
 import kotlin.test.*
 
 class MappingObservableListTest {

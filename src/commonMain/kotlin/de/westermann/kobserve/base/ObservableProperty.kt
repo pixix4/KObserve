@@ -1,12 +1,18 @@
 package de.westermann.kobserve.base
 
 import de.westermann.kobserve.Binding
+import de.westermann.kobserve.event.EventHandler
 import kotlin.reflect.KProperty
 
 /**
  * Represents a read and write property of type 'T'.
  */
 interface ObservableProperty<T> : ObservableValue<T> {
+
+    override fun get(): T
+    override fun getValue(container: Any?, property: KProperty<*>): T = get()
+    override val onChange: EventHandler<Unit>
+    override fun invalidate() {}
 
     /**
      * An object that represents the current binding state.

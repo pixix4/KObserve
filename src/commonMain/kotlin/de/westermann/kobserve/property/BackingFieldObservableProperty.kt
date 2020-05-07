@@ -19,6 +19,10 @@ class BackingFieldObservableProperty<T>(
             onChange.emit()
         }
     }
+
+    override fun invalidate() {
+        super<BackingFieldObservableValue>.invalidate()
+    }
 }
 
 /**

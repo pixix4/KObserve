@@ -20,6 +20,10 @@ class MappingObservableProperty<R, T>(
             invalidate()
         }
     }
+
+    override fun invalidate() {
+        super<MappingObservableValue>.invalidate()
+    }
 }
 
 /**

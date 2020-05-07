@@ -1,7 +1,7 @@
 package de.westermann.kobserve
 
-import de.westermann.kobserve.property.property
 import de.westermann.kobserve.list.observableListOf
+import de.westermann.kobserve.property.property
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

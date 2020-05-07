@@ -1,6 +1,8 @@
 package de.westermann.kobserve.map
 
-import de.westermann.kobserve.base.*
+import de.westermann.kobserve.base.ObservableMutableCollection
+import de.westermann.kobserve.base.ObservableMutableMap
+import de.westermann.kobserve.base.ObservableMutableSet
 import de.westermann.kobserve.event.EventHandler
 import de.westermann.kobserve.event.emit
 import de.westermann.kobserve.utils.ObservableMutableIterator
