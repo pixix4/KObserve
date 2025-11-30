@@ -80,18 +80,6 @@ open class ObservableSubList<T>(
         return (0 until size).indexOfLast { get(it) == element }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || other !is List<*>) return false
-        if (size != other.size) return false
-
-        for (index in 0 until size) {
-            if (this[index] != other[index]) return false
-        }
-
-        return true
-    }
-
     override fun hashCode(): Int {
         var result = parent.hashCode()
         result = 31 * result + range.hashCode()
@@ -104,8 +92,8 @@ open class ObservableSubList<T>(
         parent.onAddIndex { (parentIndex, element) ->
             val index = parentIndex - range.first
 
-            if (index in 0 .. size) {
-                range = range.first .. range.last + 1
+            if (index in 0..size) {
+                range = range.first..range.last + 1
                 emitOnAdd(index, element)
             }
         }
@@ -128,7 +116,7 @@ open class ObservableSubList<T>(
         }
 
         parent.onClear { elements ->
-            if (elements is List<T>) {
+            if (elements is List<T> && range.first <= elements.lastIndex && range.last <= elements.lastIndex) {
                 val e = elements.subList(range.first, range.last + 1)
                 range = IntRange.EMPTY
                 emitOnClear(e)

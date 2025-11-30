@@ -30,7 +30,10 @@ class MappingObservableProperty<R, T>(
  * Apply a transform function to the given property value and return a readonly property for the transformed value.
  * The returned property supports invalidation.
  */
-fun <R, T> ObservableProperty<R>.mapMutableBinding(transform: (R) -> T, reverseTransform: (T) -> R): ObservableProperty<T> =
+fun <R, T> ObservableProperty<R>.mapMutableBinding(
+    transform: (R) -> T,
+    reverseTransform: (T) -> R
+): ObservableProperty<T> =
     MappingObservableProperty(transform, { _, value -> this.set(reverseTransform(value)) }, this)
 
 /**

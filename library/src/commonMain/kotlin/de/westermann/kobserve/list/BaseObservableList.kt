@@ -6,7 +6,7 @@ import de.westermann.kobserve.event.EventHandler
 import de.westermann.kobserve.event.emit
 
 abstract class BaseObservableList<T>(
-        protected val backingField: MutableList<T>
+    protected val backingField: MutableList<T>
 ) : ObservableList<T> {
 
     override val onAddIndex = EventHandler<AddEvent<T>>()
@@ -22,7 +22,7 @@ abstract class BaseObservableList<T>(
     protected fun emitOnAdd(index: Int, element: T, emitOnChange: Boolean = true) {
         onAdd.emit(element)
         onAddIndex.emit(AddEvent(index, element))
-        
+
         if (emitOnChange) {
             onChange.emit()
         }

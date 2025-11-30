@@ -44,7 +44,7 @@ fun <R, T> ObservableValue<R>.nullableFlatMapBinding(transform: (R) -> Observabl
 fun <T> ObservableValue<ObservableValue<T>?>.nullableFlattenBinding(): ObservableValue<T?> =
     NullableFlatMapObservableValue({ it }, this)
 
-fun <R: Any, T> ObservableValue<R?>.nullableFlatMapBinding(attribute: KProperty1<R, ObservableValue<T>>): ObservableValue<T?> =
+fun <R : Any, T> ObservableValue<R?>.nullableFlatMapBinding(attribute: KProperty1<R, ObservableValue<T>>): ObservableValue<T?> =
     NullableFlatMapObservableValue<R?, T>({
         if (it == null) null else attribute.get(it)
     }, this)

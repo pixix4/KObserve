@@ -53,7 +53,7 @@ class MappingObservableList<P, T>(
 
         parent.onSetIndex { (index, _, newParentElement) ->
             val newElement = transformation(newParentElement)
-            
+
             val oldElement = backingField.set(index, newElement)
 
             emitOnSet(index, oldElement, newElement)
@@ -61,7 +61,7 @@ class MappingObservableList<P, T>(
 
         parent.onRemoveIndex { (index, _) ->
             val element = backingField.removeAt(index)
-                emitOnRemove(index, element)
+            emitOnRemove(index, element)
         }
 
         parent.onClear {

@@ -87,8 +87,8 @@ class FilteredObservableListTest {
     @Test
     fun equalsTest() {
         assertEquals(observableList, observableList)
-        assertEquals(observableList, listOf(1, 2))
-        assertEquals(observableList, observableListOf(1, 2))
+        assertContentEquals(observableList, listOf(1, 2))
+        assertContentEquals(observableList, observableListOf(1, 2))
 
         assertFalse(observableList.equals("Test"))
         assertFalse(observableList.equals(null))
@@ -144,10 +144,10 @@ class FilteredObservableListTest {
     @Test
     fun clearTest() {
         observableSourceList.clear()
-        assertEquals<List<Int>>(emptyList(), observableList)
+        assertContentEquals(emptyList(), observableList)
 
         observableSourceList.clear()
-        assertEquals<List<Int>>(emptyList(), observableList)
+        assertContentEquals(emptyList(), observableList)
     }
 
     @Test

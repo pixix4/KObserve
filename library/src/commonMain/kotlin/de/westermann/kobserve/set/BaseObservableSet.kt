@@ -56,7 +56,7 @@ abstract class BaseObservableSet<T>(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null) return false
-        
+
         if (other is BaseObservableSet<*>) {
             return backingField == other.backingField
         }

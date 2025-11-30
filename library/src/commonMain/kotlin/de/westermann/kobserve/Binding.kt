@@ -80,7 +80,8 @@ sealed class Binding<T> {
     /**
      * Represents a bidirectional binding state.
      */
-    class BidirectionalBinding<T>(property: ObservableProperty<T>, private val target: ObservableProperty<T>) : Binding<T>() {
+    class BidirectionalBinding<T>(property: ObservableProperty<T>, private val target: ObservableProperty<T>) :
+        Binding<T>() {
 
         override val isWritable: Boolean
             get() = target.isWritable

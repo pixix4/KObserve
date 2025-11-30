@@ -87,8 +87,8 @@ class SortedObservableListTest {
     @Test
     fun equalsTest() {
         assertEquals(observableList, observableList)
-        assertEquals(observableList, listOf(1, 2, 3, 4, 5))
-        assertEquals(observableList, observableListOf(1, 2, 3, 4, 5))
+        assertContentEquals(observableList, listOf(1, 2, 3, 4, 5))
+        assertContentEquals(observableList, observableListOf(1, 2, 3, 4, 5))
 
         assertFalse(observableList.equals("Test"))
         assertFalse(observableList.equals(null))

@@ -4,7 +4,7 @@ import de.westermann.kobserve.base.ObservableMutableList
 
 open class ObservableIterator<T>(
     private val iterator: Iterator<T>
-): Iterator<T> {
+) : Iterator<T> {
 
     override fun hasNext(): Boolean {
         return iterator.hasNext()
@@ -14,13 +14,14 @@ open class ObservableIterator<T>(
         return iterator.next()
     }
 }
+
 class ObservableMutableIterator<T>(
     private val iterator: MutableIterator<T>,
     private val onRemove: (element: T) -> Unit
-): ObservableIterator<T>(iterator), MutableIterator<T> {
+) : ObservableIterator<T>(iterator), MutableIterator<T> {
 
     private var lastElement: T? = null
-    
+
     override fun next(): T {
         val element = super.next()
 

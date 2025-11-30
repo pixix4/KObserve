@@ -57,7 +57,7 @@ abstract class RelationalObservableList<T>(
             emitOnClear(oldRelationList.map { it.element })
             return
         }
-        
+
         var hasChanged = false
 
         val minSize = min(newRelationList.size, oldRelationList.size)
@@ -81,7 +81,7 @@ abstract class RelationalObservableList<T>(
             emitOnRemove(index, relation.element)
             hasChanged = true
         }
-        
+
         if (hasChanged) {
             onChange.emit()
         }
@@ -133,18 +133,6 @@ abstract class RelationalObservableList<T>(
         }
 
         return -1
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || other !is List<*>) return false
-        if (size != other.size) return false
-
-        for (index in 0 until size) {
-            if (this[index] != other[index]) return false
-        }
-
-        return true
     }
 
     override fun hashCode(): Int {

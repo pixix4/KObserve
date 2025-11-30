@@ -13,7 +13,7 @@ class ObservableMutableSubList<T>(
     }
 
     override fun add(index: Int, element: T) {
-        if (index !in 0 .. size) {
+        if (index !in 0..size) {
             throw IndexOutOfBoundsException()
         }
 
@@ -29,13 +29,23 @@ class ObservableMutableSubList<T>(
     }
 
     override fun addAll(elements: Collection<T>): Boolean {
-        return parent.addAll( range.last + 1, elements)
+        return parent.addAll(range.last + 1, elements)
     }
 
     override fun clear() {
         for (i in 0 until size) {
             parent.removeAt(range.first)
         }
+    }
+
+    override fun atomicClearAndAdd(element: T) {
+        clear()
+        add(element)
+    }
+
+    override fun atomicClearAndAddAll(elements: Collection<T>) {
+        clear()
+        addAll(elements)
     }
 
     override fun remove(element: T): Boolean {

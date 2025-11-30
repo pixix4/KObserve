@@ -24,7 +24,7 @@ class MappingObservableSet<P, T>(
             backingField.clear()
             emitOnClear(elementsToRemove)
         }
-        
+
         for (element in elementsToAdd) {
             backingField += element
             emitOnAdd(element)

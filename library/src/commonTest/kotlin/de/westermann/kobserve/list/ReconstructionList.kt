@@ -1,6 +1,7 @@
 package de.westermann.kobserve.list
 
 import de.westermann.kobserve.base.ObservableList
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class ReconstructionList<T>(
@@ -17,8 +18,8 @@ class ReconstructionList<T>(
         block()
         onChangeAssert = true
 
-        assertEquals(referenceValue, reference.value)
-        assertEquals(referenceValue, list)
+        assertContentEquals(referenceValue, reference.value)
+        assertContentEquals(referenceValue, list)
     }
 
     init {
@@ -36,14 +37,14 @@ class ReconstructionList<T>(
             assertEquals(element, list.removeAt(index))
         }
         reference.onClear { elements ->
-            assertEquals(list, elements)
+            assertContentEquals(list, elements)
             list.clear()
         }
 
         reference.onChange {
             if (onChangeAssert) {
-                assertEquals(referenceValue, reference.value)
-                assertEquals(referenceValue, list)
+                assertContentEquals(referenceValue, reference.value)
+                assertContentEquals(referenceValue, list)
             }
         }
     }

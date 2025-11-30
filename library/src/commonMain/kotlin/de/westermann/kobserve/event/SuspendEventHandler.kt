@@ -7,9 +7,9 @@ import kotlin.coroutines.suspendCoroutine
 /**
  * This class represents a simple event handler who manages listeners for an event of type 'E'.
  */
-class EventHandler<E>() {
+class SuspendEventHandler<E>() {
 
-    private var listeners: Map<(E) -> Unit, EventListener<E>?> = emptyMap()
+    private var listeners: Map<suspend (E) -> Unit, SuspendEventListener<E>?> = emptyMap()
 
     /**
      * Add an event listener to this handler if it is not already present.
@@ -18,7 +18,7 @@ class EventHandler<E>() {
      *
      * @return The event listener that was added or null if it was already present.
      */
-    fun addListener(listener: (E) -> Unit): ((E) -> Unit) {
+    fun addListener(listener: suspend (E) -> Unit): suspend (E) -> Unit {
         if (listener !in listeners) {
             listeners += listener to null
             onAttach()
@@ -32,7 +32,7 @@ class EventHandler<E>() {
      *
      * @param listener The event listener to detach.
      */
-    fun removeListener(listener: (E) -> Unit) {
+    fun removeListener(listener: suspend (E) -> Unit) {
         if (listener in listeners) {
             listeners -= listener
             onDetach()
@@ -54,7 +54,7 @@ class EventHandler<E>() {
      *
      * @param event The event to emit.
      */
-    fun emit(event: E) {
+    suspend fun emit(event: E) {
         for (listener in listeners.keys) {
             listener(event)
         }
@@ -63,21 +63,21 @@ class EventHandler<E>() {
     /**
      * @see addListener
      */
-    operator fun invoke(listener: (E) -> Unit) {
+    operator fun invoke(listener: suspend (E) -> Unit) {
         addListener(listener)
     }
 
     /**
      * @see addListener
      */
-    operator fun plusAssign(listener: (E) -> Unit) {
+    operator fun plusAssign(listener: suspend (E) -> Unit) {
         addListener(listener)
     }
 
     /**
      * @see removeListener
      */
-    operator fun minusAssign(listener: (E) -> Unit) {
+    operator fun minusAssign(listener: suspend (E) -> Unit) {
         removeListener(listener)
     }
 
@@ -88,7 +88,7 @@ class EventHandler<E>() {
      *
      * @return A reference object to the added listener or null if it was already present.
      */
-    fun reference(listener: (E) -> Unit): EventListener<E> {
+    fun reference(listener: suspend (E) -> Unit): SuspendEventListener<E> {
         addListener(listener)
 
         var reference = listeners[listener]
@@ -106,7 +106,7 @@ class EventHandler<E>() {
     val size: Int
         get() = listeners.size
 
-    operator fun contains(element: (E) -> Unit): Boolean {
+    operator fun contains(element: suspend (E) -> Unit): Boolean {
         return listeners.contains(element)
     }
 
@@ -114,14 +114,14 @@ class EventHandler<E>() {
         return listeners.isEmpty()
     }
 
-    operator fun iterator(): Iterator<(E) -> Unit> {
+    operator fun iterator(): Iterator<suspend (E) -> Unit> {
         return listeners.keys.iterator()
     }
 
     var onAttach: () -> Unit = {}
     var onDetach: () -> Unit = {}
 
-    constructor(vararg dependencies: EventHandler<out E>) : this() {
+    constructor(vararg dependencies: SuspendEventHandler<out E>) : this() {
         dependencies.forEach { eventHandler ->
             eventHandler.addListener { event ->
                 emit(event)
@@ -130,10 +130,10 @@ class EventHandler<E>() {
     }
 
     private inner class Listener(
-        private val listener: (E) -> Unit
-    ) : EventListener<E> {
+        private val listener: suspend (E) -> Unit
+    ) : SuspendEventListener<E> {
 
-        override fun emit(event: E) {
+        override suspend fun emit(event: E) {
             listener(event)
         }
 
@@ -177,10 +177,10 @@ class EventHandler<E>() {
 /**
  * Utility function that allows simple event binding of an unit event to another generic event.
  *
- * @param handler A generic event handler to listen to.
+ * @param handler An generic event handler to listen to.
  * @receiver The unit event handler that should listen.
  */
-fun EventHandler<Unit>.listenTo(handler: EventHandler<*>) {
+fun SuspendEventHandler<Unit>.listenTo(handler: SuspendEventHandler<*>) {
     handler {
         emit()
     }
@@ -189,35 +189,38 @@ fun EventHandler<Unit>.listenTo(handler: EventHandler<*>) {
 /**
  * Combine two common event handler to listen two both simultaneously.
  */
-infix fun <T> EventHandler<out T>.and(other: EventHandler<out T>): EventHandler<T> =
-    EventHandler(this, other)
+infix fun <T> SuspendEventHandler<out T>.and(other: SuspendEventHandler<out T>): SuspendEventHandler<T> =
+    SuspendEventHandler(this, other)
 
 /**
  * Combine two common event handler to listen two both simultaneously.
  */
-fun <T> EventHandler<out T>.and(other: EventHandler<out T>, listener: (T) -> Unit): EventHandler<T> =
-    EventHandler(this, other).also { it += listener }
+fun <T> SuspendEventHandler<out T>.and(
+    other: SuspendEventHandler<out T>,
+    listener: suspend (T) -> Unit
+): SuspendEventHandler<T> =
+    SuspendEventHandler(this, other).also { it += listener }
 
 /**
  * Combine two common event handler to listen two both simultaneously.
  */
-operator fun <T> EventHandler<out T>.plus(other: EventHandler<out T>): EventHandler<T> =
-    EventHandler(this, other)
+operator fun <T> SuspendEventHandler<out T>.plus(other: SuspendEventHandler<out T>): SuspendEventHandler<T> =
+    SuspendEventHandler(this, other)
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun EventHandler<Unit>.emit() {
+suspend inline fun SuspendEventHandler<Unit>.emit() {
     emit(Unit)
 }
 
-fun <T> EventHandler<T>.once(listener: (T) -> Unit) {
-    var temp: (T) -> Unit = {}
+fun <T> SuspendEventHandler<T>.once(listener: suspend (T) -> Unit) {
+    var temp: suspend (T) -> Unit = {}
     temp = addListener {
         listener(it)
         removeListener(temp)
     }
 }
 
-suspend fun <T> EventHandler<T>.next(): T {
+suspend fun <T> SuspendEventHandler<T>.next(): T {
     return suspendCoroutine { continuation ->
         once {
             continuation.resume(it)
@@ -225,19 +228,19 @@ suspend fun <T> EventHandler<T>.next(): T {
     }
 }
 
-fun <T> EventHandler<T>.now(value: T, listener: (T) -> Unit) {
+suspend fun <T> SuspendEventHandler<T>.now(value: T, listener: suspend (T) -> Unit) {
     addListener(listener)
     listener(value)
 }
 
-fun EventHandler<Unit>.now(listener: (Unit) -> Unit) {
+suspend fun SuspendEventHandler<Unit>.now(listener: suspend (Unit) -> Unit) {
     now(Unit, listener)
 }
 
-fun <T, E> ObservableValue<T>.mapEvent(transform: (T) -> EventHandler<E>): EventHandler<E> {
-    val handler = EventHandler<E>()
+fun <T, E> ObservableValue<T>.mapEvent(transform: (T) -> SuspendEventHandler<E>): SuspendEventHandler<E> {
+    val handler = SuspendEventHandler<E>()
 
-    var reference: EventListener<E>? = null
+    var reference: SuspendEventListener<E>? = null
 
     fun update() {
         reference?.detach()
