@@ -1,8 +1,3 @@
-[![Build Status](https://travis-ci.org/pixix4/KObserve.svg?branch=master)](https://travis-ci.org/pixix4/KObserve)
-[![Download](https://api.bintray.com/packages/pixix4/maven/KObserve/images/download.svg) ](https://bintray.com/pixix4/maven/KObserve/_latestVersion)
-[![Maintainability](https://api.codeclimate.com/v1/badges/91165ae11f0fb42f143d/maintainability)](https://codeclimate.com/github/pixix4/KObserve/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/91165ae11f0fb42f143d/test_coverage)](https://codeclimate.com/github/pixix4/KObserve/test_coverage)
-
 # KObserve
 An easy to use kotlin library for observable properties.
 
@@ -19,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.westermann:KObserve-jvm:$version"
+    implementation "io.github.pixix4:KObserve-jvm:$version"
 }
 ```
 
@@ -42,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.westermann:KObserve:$version"
+    implementation "io.github.pixix4:KObserve:$version"
 }
 ```
 
