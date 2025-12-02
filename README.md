@@ -1,3 +1,5 @@
+![Maven Central Version](https://img.shields.io/maven-central/v/io.github.pixix4/KObserve)
+
 # KObserve
 An easy to use kotlin library for observable properties.
 
