@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "io.github.pixix4"
-version = "1.0.0"
+version = "1.0.0-beta"
 
 kotlin {
     jvm()
@@ -42,7 +42,9 @@ mavenPublishing {
             developer {
                 id = "pixix4"
                 name = "Lars Westermann"
-                url = "maven@lars-westermann.de"
+                email = "maven@lars-westermann.de"
+                organization = ""
+                organizationUrl = "https://github.com/pixix4"
             }
         }
         scm {
