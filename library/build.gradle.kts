@@ -1,11 +1,9 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.vanniktech.mavenPublish)
 }
 
-group = "de.westermann"
+group = "io.github.pixix4"
 version = "1.0.0"
 
 kotlin {

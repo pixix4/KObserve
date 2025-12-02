@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.westermann:KObserve-jvm:$version"
+    implementation "io.github.pixix4:KObserve-jvm:$version"
 }
 ```
 
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-    implementation "de.westermann:KObserve:$version"
+    implementation "io.github.pixix4:KObserve:$version"
 }
 ```
 
